@@ -10,3 +10,11 @@ There are a couple of steps to be taken for bumping to a new version:
 (`{major}.{minor}.{patch}`). The command modifies the necessary files, creates a
 new Git tag and commits the changes;
 2. Push the new commit (**don't forget the** `--tags` flag): `git push --tags -u origin master`.
+
+
+# Upload to PyPI
+
+1. Bump to a new version (please refer to the instructions for doing this);
+2. Execute: `python setup.py sdist`;
+3. Execute: `twine upload dist/data_mine-[new_version].tar.gz` and provide
+your credentials.
