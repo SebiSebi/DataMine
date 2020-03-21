@@ -2,4 +2,5 @@ coverage
 pytest>=4.6.9
 pytest-cov>=2.8.1
 responses>=0.10.12
-Faker>=3.0.1
+Faker
+mock; python_version < '3.3'

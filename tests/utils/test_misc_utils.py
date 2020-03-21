@@ -1,8 +1,12 @@
 import os
+import sys
 import unittest
 
 from data_mine.utils import get_home_dir
-from unittest.mock import patch
+if sys.version_info >= (3, 3):
+    from unittest.mock import patch
+else:
+    from mock import patch
 
 
 class TestMiscUtils(unittest.TestCase):
