@@ -1,6 +1,7 @@
+Faker
+codecov
 coverage
+mock; python_version < '3.3'
 pytest>=4.6.9
 pytest-cov>=2.8.1
 responses>=0.10.12
-Faker
-mock; python_version < '3.3'
