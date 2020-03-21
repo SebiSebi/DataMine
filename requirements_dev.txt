@@ -1,4 +1,5 @@
 bumpversion>=0.5.3
 grip>=4.5.2
-twine>=3.1.1
+twine>=3.1.1; python_version >= '3.3'
+twine>=1.15.0; python_version < '3.3'
 green>=3.1.0

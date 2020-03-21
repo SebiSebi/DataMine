@@ -3,6 +3,7 @@
 import hashlib
 import requests
 
+from six import string_types
 from tqdm import tqdm
 
 
@@ -14,9 +15,9 @@ def download_file(url, output_file_path, expected_sha256=None):
     If the expected SHA256 is provided, the data is checked for
     corruption. If the data is corrupted, a RuntimeError is raised.
     '''
-    assert(isinstance(url, str))
-    assert(isinstance(output_file_path, str))
-    assert(expected_sha256 is None or isinstance(expected_sha256, str))
+    assert(isinstance(url, string_types))
+    assert(isinstance(output_file_path, string_types))
+    assert(expected_sha256 is None or isinstance(expected_sha256, string_types))  # noqa: E501
 
     # Iterates through a request data yielding chunks. To be used along
     # with Response.raw (see the comment below).
