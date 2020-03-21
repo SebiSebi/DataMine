@@ -4,6 +4,7 @@
   <img width="42%" height="42%" src="https://github.com/SebiSebi/DataMine/blob/master/images/logo/goldmine_logo_v1.png">
 </p>
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e7fe36c99fd841dd8760222d8de4a6c4)](https://app.codacy.com/manual/SebiSebi/DataMine?utm_source=github.com&utm_medium=referral&utm_content=SebiSebi/DataMine&utm_campaign=Badge_Grade_Dashboard)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/SebiSebi/DataMine/blob/master/LICENSE)
 [![Build Status](https://travis-ci.com/SebiSebi/DataMine.svg?branch=master)](https://travis-ci.com/github/SebiSebi/DataMine)
 [![codecov](https://codecov.io/gh/SebiSebi/DataMine/branch/master/graph/badge.svg)](https://codecov.io/gh/SebiSebi/DataMine)
