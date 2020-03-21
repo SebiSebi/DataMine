@@ -1,0 +1,5 @@
+coverage
+pytest>=5.4.1
+pytest-cov>=2.8.1
+responses>=0.10.12
+Faker>=4.0.2

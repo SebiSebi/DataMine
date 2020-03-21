@@ -39,7 +39,7 @@ def download_file(url, output_file_path, expected_sha256=None):
         sha256 = hashlib.sha256()
         with open(output_file_path, 'wb') as g:
             for data in data_iterator(req.raw, block_size):
-                if not data:
+                if not data:  # pragma: no cover
                     continue
                 g.write(data)
                 sha256.update(data)
@@ -52,7 +52,3 @@ def download_file(url, output_file_path, expected_sha256=None):
             raise RuntimeError(
                     "Downloaded file is corrupt. SHA256 = {}".format(sha256)
             )
-
-
-# TODO(sebisebi): test using https://github.com/getsentry/responses
-# At least two tests (one large and one medium) + error.

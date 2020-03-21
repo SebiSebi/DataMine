@@ -18,3 +18,12 @@ new Git tag and commits the changes;
 2. Execute: `python setup.py sdist`;
 3. Execute: `twine upload dist/data_mine-[new_version].tar.gz` and provide
 your credentials.
+
+
+# Run tests
+
+There are 2 scripts that can be use to execute tests:
+1. `./run_tests.sh` (uses `pytest`). This is usually run by the continuous
+integration engine. Not recommended while developing and testing locally.
+2. `./green.sh` (uses `green`). This is **recommended** to be used
+while developing. It shows friendly messages and summaries.
