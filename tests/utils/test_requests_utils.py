@@ -154,9 +154,9 @@ class TestDownloadFileIfMissingFn(unittest.TestCase):
                 stream=True
         )
 
-    def check_file_contents(self, downloaded_file):
+    def good_data(self, downloaded_file):
         with open(downloaded_file, "rt") as f:
-            self.assertEqual(f.read(), self.file_contents)
+            return f.read() == self.file_contents
 
     @responses.activate
     def test_when_file_is_missing(self):
@@ -174,7 +174,7 @@ class TestDownloadFileIfMissingFn(unittest.TestCase):
         self.assertFalse(os.path.isfile(temp_file_path))
         download_file_if_missing(FAKE_URL, temp_file_path, self.correct_sha256)
         self.assertTrue(os.path.isfile(temp_file_path))
-        self.check_file_contents(temp_file_path)
+        self.assertTrue(self.good_data(temp_file_path))
         os.remove(temp_file_path)
 
     @responses.activate
@@ -193,7 +193,7 @@ class TestDownloadFileIfMissingFn(unittest.TestCase):
         self.assertTrue(os.path.isfile(temp_file_path))
         download_file_if_missing(FAKE_URL, temp_file_path, self.correct_sha256)
         self.assertTrue(os.path.isfile(temp_file_path))
-        self.check_file_contents(temp_file_path)
+        self.assertTrue(self.good_data(temp_file_path))
         os.remove(temp_file_path)
 
     def test_when_file_is_ok(self):
@@ -210,7 +210,24 @@ class TestDownloadFileIfMissingFn(unittest.TestCase):
         self.assertTrue(os.path.isfile(temp_file_path))
         download_file_if_missing(FAKE_URL, temp_file_path, self.correct_sha256)
         self.assertTrue(os.path.isfile(temp_file_path))
-        self.check_file_contents(temp_file_path)
+        self.assertTrue(self.good_data(temp_file_path))
+        os.remove(temp_file_path)
+
+    def test_when_file_is_corrupt_but_checksum_not_provided(self):
+        fake = Faker()
+        fake_suffix = fake.pystr(min_chars=15, max_chars=25)
+        temp_fd, temp_file_path = mkstemp(suffix=fake_suffix)
+        os.close(temp_fd)
+        del fake_suffix
+
+        # Write some modified data to the file.
+        with open(temp_file_path, "wt") as g:
+            g.write(self.file_contents * 5)
+
+        self.assertTrue(os.path.isfile(temp_file_path))
+        download_file_if_missing(FAKE_URL, temp_file_path)
+        self.assertTrue(os.path.isfile(temp_file_path))
+        self.assertFalse(self.good_data(temp_file_path))
         os.remove(temp_file_path)
 
 
