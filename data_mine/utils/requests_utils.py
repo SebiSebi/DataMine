@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import hashlib
+import os
 import requests
 
+from data_mine.utils import file_sha256
 from six import string_types
 from tqdm import tqdm
 
@@ -55,3 +57,31 @@ def download_file(url, output_file_path, expected_sha256=None):
             raise RuntimeError(
                     "Downloaded file is corrupt. SHA256 = {}".format(sha256)
             )
+
+
+def download_file_if_missing(url, output_file_path, expected_sha256=None):
+    '''
+    If the file exists and the sha256 sum is correct, then no download is
+    performed. Otherwise the file is downloaded from the given URL.
+    The sha256 sum will be always verified (if provided). Therefore, if
+    this function executes successfully it is guaranteed that we have a
+    local copy of the requested file and the local data is not corrupted.
+
+    Note: if `expected_sha256` is not provided (e.g. None) then no integrity
+    chech is performed. That is, it only matters if the file is found on the
+    local disk (corrupted or not).
+    '''
+    assert(isinstance(url, string_types))
+    assert(isinstance(output_file_path, string_types))
+    assert(expected_sha256 is None or isinstance(expected_sha256, string_types))  # noqa: E501
+
+    def verify_file_hash():
+        if expected_sha256 is None:
+            return True
+        return file_sha256(output_file_path) == expected_sha256
+
+    if os.path.isfile(output_file_path) and verify_file_hash():
+        return  # The file could be found locally.
+
+    # Otherwise, download the data from the provided URL.
+    download_file(url, output_file_path, expected_sha256)

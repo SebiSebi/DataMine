@@ -4,13 +4,14 @@ import responses
 import unittest
 
 from data_mine.utils import download_file
+from data_mine.utils import download_file_if_missing
 from faker import Faker
 from tempfile import mkstemp
 
 FAKE_URL = "http://my-fake-url-for-testing/unique"
 
 
-class TestDownloadFileUtil(unittest.TestCase):
+class TestDownloadFileFn(unittest.TestCase):
 
     @responses.activate
     def test_small_file(self):
@@ -133,6 +134,84 @@ class TestDownloadFileUtil(unittest.TestCase):
                 os.close(temp_fd)
             if temp_file_path:
                 os.remove(temp_file_path)
+
+
+class TestDownloadFileIfMissingFn(unittest.TestCase):
+
+    def setUp(self):
+        self.file_contents = "Unit testing is awesome!"
+        self.correct_sha256 = "8c0c59c1aa6348baa0bea76640da481fcc0a9493f5b484c94bc6ea9f311858f8"  # noqa: E501
+
+    def tearDown(self):
+        pass
+
+    def fake_download_response(self):
+        data = self.file_contents.encode()
+        responses.add(
+                responses.GET, FAKE_URL,
+                body=data, status=200,
+                headers={'content-length': str(len(data))},
+                stream=True
+        )
+
+    def check_file_contents(self, downloaded_file):
+        with open(downloaded_file, "rt") as f:
+            self.assertEqual(f.read(), self.file_contents)
+
+    @responses.activate
+    def test_when_file_is_missing(self):
+        # A flaky way of generating a temporary file name without the file.
+        fake = Faker()
+        fake_suffix = fake.pystr(min_chars=15, max_chars=25)
+        temp_fd, temp_file_path = mkstemp(suffix=fake_suffix)
+        del fake_suffix
+
+        os.close(temp_fd)
+        os.remove(temp_file_path)
+
+        self.fake_download_response()
+
+        self.assertFalse(os.path.isfile(temp_file_path))
+        download_file_if_missing(FAKE_URL, temp_file_path, self.correct_sha256)
+        self.assertTrue(os.path.isfile(temp_file_path))
+        self.check_file_contents(temp_file_path)
+        os.remove(temp_file_path)
+
+    @responses.activate
+    def test_when_file_is_corrupt(self):
+        fake = Faker()
+        fake_suffix = fake.pystr(min_chars=15, max_chars=25)
+        temp_fd, temp_file_path = mkstemp(suffix=fake_suffix)
+        os.close(temp_fd)
+        del fake_suffix
+
+        # Write some modified data to the file.
+        with open(temp_file_path, "wb") as g:
+            g.write(self.file_contents.encode() * 10)
+        self.fake_download_response()
+
+        self.assertTrue(os.path.isfile(temp_file_path))
+        download_file_if_missing(FAKE_URL, temp_file_path, self.correct_sha256)
+        self.assertTrue(os.path.isfile(temp_file_path))
+        self.check_file_contents(temp_file_path)
+        os.remove(temp_file_path)
+
+    def test_when_file_is_ok(self):
+        fake = Faker()
+        fake_suffix = fake.pystr(min_chars=10, max_chars=15)
+        temp_fd, temp_file_path = mkstemp(suffix=fake_suffix)
+        os.close(temp_fd)
+        del fake_suffix
+
+        # Write the good contents to the file.
+        with open(temp_file_path, "wt") as g:
+            g.write(self.file_contents)
+
+        self.assertTrue(os.path.isfile(temp_file_path))
+        download_file_if_missing(FAKE_URL, temp_file_path, self.correct_sha256)
+        self.assertTrue(os.path.isfile(temp_file_path))
+        self.check_file_contents(temp_file_path)
+        os.remove(temp_file_path)
 
 
 if __name__ == '__main__':
