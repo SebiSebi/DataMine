@@ -27,7 +27,7 @@ def load_config_file(file_path):
 
     with gzip.open(file_path, "rb") as f:
         for line in f:
-            print(line)
-            if len(line.strip()) == 0:
+            line = line.decode().strip()
+            if len(line) == 0:
                 continue
-            yield parse_line(line.strip())
+            yield parse_line(line)
