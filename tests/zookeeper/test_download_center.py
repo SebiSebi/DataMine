@@ -48,6 +48,7 @@ class TestLoadConfigFileFn(unittest.TestCase):
     def test_under_normal_conditions(self):
         entries = self.generate_good_data()
         mock_file = mock_open(read_data=self.serialize_ok(entries))
+        print(self.serialize_ok(entries))
         with patch('gzip.open', mock_file):
             read_entries = list(load_config_file(self.FAKE_FILE))
             mock_file.assert_called_once_with(self.FAKE_FILE, "rt")
