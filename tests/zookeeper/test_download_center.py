@@ -51,7 +51,7 @@ class TestLoadConfigFileFn(unittest.TestCase):
         print(self.serialize_ok(entries))
         with patch('gzip.open', mock_file):
             read_entries = list(load_config_file(self.FAKE_FILE))
-            mock_file.assert_called_once_with(self.FAKE_FILE, "rt")
+            mock_file.assert_called_once_with(self.FAKE_FILE, "rb")
         self.assertEqual(len(entries), len(read_entries))
         for (sha1, path1), (sha2, path2) in zip(entries, read_entries):
             self.assertEqual(sha1, sha2)
@@ -64,7 +64,7 @@ class TestLoadConfigFileFn(unittest.TestCase):
         with patch('gzip.open', mock_file):
             with self.assertRaises(RuntimeError) as context:
                 list(load_config_file(self.FAKE_FILE))
-            mock_file.assert_called_once_with(self.FAKE_FILE, "rt")
+            mock_file.assert_called_once_with(self.FAKE_FILE, "rb")
             self.assertIn("Invalid hex SHA256", str(context.exception))
 
     def test_too_long_sha256(self):
@@ -74,7 +74,7 @@ class TestLoadConfigFileFn(unittest.TestCase):
         with patch('gzip.open', mock_file):
             with self.assertRaises(RuntimeError) as context:
                 list(load_config_file(self.FAKE_FILE))
-            mock_file.assert_called_once_with(self.FAKE_FILE, "rt")
+            mock_file.assert_called_once_with(self.FAKE_FILE, "rb")
             self.assertIn("Invalid format", str(context.exception))
 
     def test_missing_space_separator(self):
@@ -83,7 +83,7 @@ class TestLoadConfigFileFn(unittest.TestCase):
         with patch('gzip.open', mock_file):
             with self.assertRaises(RuntimeError) as context:
                 list(load_config_file(self.FAKE_FILE))
-            mock_file.assert_called_once_with(self.FAKE_FILE, "rt")
+            mock_file.assert_called_once_with(self.FAKE_FILE, "rb")
             self.assertIn("Invalid format", str(context.exception))
 
 

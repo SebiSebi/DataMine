@@ -25,7 +25,7 @@ def load_config_file(file_path):
             raise RuntimeError("Invalid hex SHA256: `{}`".format(sha256))
         return sha256, path
 
-    with gzip.open(file_path, "rt") as f:
+    with gzip.open(file_path, "rb") as f:
         for line in f:
             print(line)
             if len(line.strip()) == 0:
