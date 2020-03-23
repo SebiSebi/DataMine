@@ -10,13 +10,13 @@ from tqdm import tqdm
 
 
 def download_file(url, output_file_path, expected_sha256=None):
-    '''
+    """
     Downloads the resource from `url` and saves the bytes to the
     output file (no decoding is performed, raw data is saved).
 
     If the expected SHA256 is provided, the data is checked for
     corruption. If the data is corrupted, a RuntimeError is raised.
-    '''
+    """
     assert(isinstance(url, string_types))
     assert(isinstance(output_file_path, string_types))
     assert(expected_sha256 is None or isinstance(expected_sha256, string_types))  # noqa: E501
@@ -60,7 +60,7 @@ def download_file(url, output_file_path, expected_sha256=None):
 
 
 def download_file_if_missing(url, output_file_path, expected_sha256=None):
-    '''
+    """
     If the file exists and the sha256 sum is correct, then no download is
     performed. Otherwise the file is downloaded from the given URL.
     The sha256 sum will be always verified (if provided). Therefore, if
@@ -70,7 +70,7 @@ def download_file_if_missing(url, output_file_path, expected_sha256=None):
     Note: if `expected_sha256` is not provided (e.g. None) then no integrity
     chech is performed. That is, it only matters if the file is found on the
     local disk (corrupted or not).
-    '''
+    """
     assert(isinstance(url, string_types))
     assert(isinstance(output_file_path, string_types))
     assert(expected_sha256 is None or isinstance(expected_sha256, string_types))  # noqa: E501
