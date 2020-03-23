@@ -51,6 +51,7 @@ class TestLoadConfigFileFn(unittest.TestCase):
         with patch('gzip.open', mock_file):
             read_entries = list(load_config_file(self.FAKE_FILE))
             mock_file.assert_called_once_with(self.FAKE_FILE, "rt")
+        self.assertEqual(len(entries), len(read_entries))
         for (sha1, path1), (sha2, path2) in zip(entries, read_entries):
             self.assertEqual(sha1, sha2)
             self.assertEqual(path1, path2)
