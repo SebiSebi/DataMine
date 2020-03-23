@@ -36,7 +36,7 @@ class TestLoadConfigFileFn(unittest.TestCase):
         a string (file contents) in the expected format: sha256 2-spaces path.
         """
         data = '\n'.join(["{}  {}".format(sha, path) for sha, path in entries])
-        return "\n\n" + data + "\n \t\n\n"
+        return data + "\n \t\n\n"
 
     def serialize_bad(self, entries):
         """
