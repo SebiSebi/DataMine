@@ -3,7 +3,7 @@ from setuptools import setup
 
 # Read repository information. This will be used as the package description.
 long_description = None
-with open('README_PyPI.md', 'r') as f:
+with open('README_PyPI.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 assert(long_description is not None)
 
@@ -27,6 +27,7 @@ setup(
     ],
     package_dir={'data_mine': 'data_mine'},
     install_requires=requirements,
+    keywords='machine learning datasets data collection',
     classifiers=[
         'Development Status :: 1 - Planning',  # TODO(sebisebi): change.
         'Intended Audience :: Developers',
