@@ -27,6 +27,7 @@ setup(
     ],
     package_dir={'data_mine': 'data_mine'},
     install_requires=requirements,
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     keywords='machine learning datasets data collection',
     classifiers=[
         'Development Status :: 1 - Planning',  # TODO(sebisebi): change.
