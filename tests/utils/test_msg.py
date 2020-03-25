@@ -19,7 +19,7 @@ class TestMsgFunctions(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_program_exists_when_required(self, mock_stdout):
-        for fn in [msg.info, msg.error]:
+        for fn in [msg.info, msg.warning, msg.error]:
             exit_code = random.randint(1, 127)
             with self.assertRaises(SystemExit) as context:
                 fn("fake msg 1", exit=exit_code)
@@ -41,6 +41,11 @@ class TestMsgFunctions(unittest.TestCase):
     def test_info(self, mock_stdout):
         msg.info("info message")
         self.assertEqual(mock_stdout.getvalue(), "[✓] info message\n")
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_warning(self, mock_stdout):
+        msg.warning("warning message")
+        self.assertEqual(mock_stdout.getvalue(), "[!] warning message\n")
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_error(self, mock_stdout):

@@ -3,12 +3,24 @@
 from __future__ import print_function
 
 import crayons
+import inspect
+import six
 import sys
 
 
 def maybe_exit(f):
     # Decorator function that checks if `exit` argument is provided.
     # If so, terminates the program with the provided exit code.
+
+    args = None
+    if six.PY3:
+        args = inspect.getfullargspec(f).args
+    else:
+        args = inspect.getargspec(f).args
+    assert(len(args) == 2)
+    assert(args[0] == "message")
+    assert(args[1] == "exit")
+
     def wrapper(*args, **kwargs):
         exit = kwargs.get("exit", None)
         if exit is None and len(args) >= 2:
@@ -52,6 +64,16 @@ def info(message, exit=None):
     the program is terminated with the provided exit code.
     """
     print(crayons.cyan(fmt(message, "[✓]"), bold=True))
+    sys.stdout.flush()
+
+
+@maybe_exit
+def warning(message, exit=None):
+    """
+    Displays a message in info style. If `exit` is not None, then
+    the program is terminated with the provided exit code.
+    """
+    print(crayons.yellow(fmt(message, "[!]"), bold=True))
     sys.stdout.flush()
 
 
