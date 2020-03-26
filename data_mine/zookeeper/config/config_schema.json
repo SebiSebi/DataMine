@@ -20,7 +20,10 @@
 			    "type": "object",
                             "properties": {
                                 "URL": {"type": "string"},
-                                "SHA256": {"type": "string"}
+                                "SHA256": {
+				    "type": "string",
+				    "pattern": "^[0123456789abcdef]{64}$"
+				}
                             },
                             "required": ["URL", "SHA256"],
                             "additionalProperties": false
