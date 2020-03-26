@@ -1,0 +1,38 @@
+{
+    "title": "JSON schema for the dataset configurations.",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "dataset": {
+                "type": "string",
+                "enum": [
+                    "RACE"
+                ]
+            },
+            "config": {
+                "type": "object",
+                "properties": {
+                    "requirements": {
+                        "type": "array",
+                        "items": {
+			    "type": "object",
+                            "properties": {
+                                "URL": {"type": "string"},
+                                "SHA256": {"type": "string"}
+                            },
+                            "required": ["URL", "SHA256"],
+                            "additionalProperties": false
+                        },
+			"minItems": 1
+                    }
+                },
+                "required": ["requirements"],
+                "additionalProperties": false
+            }
+        },
+        "required": ["dataset", "config"],
+        "additionalProperties": false
+    }
+}
