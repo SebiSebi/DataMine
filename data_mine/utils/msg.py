@@ -42,8 +42,12 @@ def maybe_exit(f):
 
 def fmt(message, prefix):
     """
-    If the message is multiline then split and add the prefix
-    string to each line.
+    Formats the given message by adding `prefix` at the start of each line.
+
+    If the message is multi-line then split it according to the end-of-line
+    terminators and add the prefix string to the start of each line.
+    The `prefix` is not added to the beginning of a line if the line is
+    completely empty (only whitespace).
     """
     message = str(message).splitlines(True)
     if not message:
@@ -60,8 +64,10 @@ def fmt(message, prefix):
 @maybe_exit
 def info(message, exits=None):  # pylint: disable=unused-argument
     """
-    Displays a message in info style. If `exits` is not None, then
-    the program is terminated with the provided exit code.
+    Displays a message in info style.
+
+    If `exits` is not None, then the program is terminated with the provided
+    exit code.
     """
     print(crayons.cyan(fmt(message, "[✓]"), bold=True))
     sys.stdout.flush()
@@ -70,8 +76,10 @@ def info(message, exits=None):  # pylint: disable=unused-argument
 @maybe_exit
 def warning(message, exits=None):  # pylint: disable=unused-argument
     """
-    Displays a message in info style. If `exits` is not None, then
-    the program is terminated with the provided exit code.
+    Displays a message in info style.
+
+    If `exits` is not None, then the program is terminated with the provided
+    exit code.
     """
     print(crayons.yellow(fmt(message, "[!]"), bold=True))
     sys.stdout.flush()
@@ -80,8 +88,10 @@ def warning(message, exits=None):  # pylint: disable=unused-argument
 @maybe_exit
 def error(message, exits=None):  # pylint: disable=unused-argument
     """
-    Displays a message in error style. If `exits` is not None, then
-    the program is terminated with the provided exit code.
+    Displays a message in error style.
+
+    If `exits` is not None, then the program is terminated with the provided
+    exit code.
     """
     print(crayons.red(fmt(message, "[✗]"), bold=True))
     sys.stdout.flush()

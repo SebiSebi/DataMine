@@ -1,6 +1,8 @@
 
 def next_question_id(next_ids, id_base):
     """
+    Incrementally fetches the next question ID based on the base passage ID.
+
     Some questions have the same ID in the RACE dataset (if they are
     in the same file). We try to make those unique by appending an
     index before the id. @q_ids is used to keep the counter for each
