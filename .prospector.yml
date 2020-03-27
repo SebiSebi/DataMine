@@ -16,9 +16,13 @@ pylint:
   run: true
   disable:
     - bad-builtin
-    - too-few-public-methods
+    # Line length is check py Flake8.
+    - line-too-long
     - missing-docstring
     - star-args
+    - superfluous-parens
+    - too-few-public-methods
+    - wrong-import-order
 
 pep8:
   run: true
