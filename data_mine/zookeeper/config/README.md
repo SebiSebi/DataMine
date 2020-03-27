@@ -29,3 +29,10 @@ Configuration example (may be outdated)
     }
 ]
 ```
+
+Observations
+------------
+
+* `expectedFiles` path is relative to the `PROJECT_ROOT` (e.g. the `data_mine/` directory)
+and must be a `gzip` compressed file. The paths in the expected files list should be
+relative to the dataset directory (e.g. `DATAMINE_DIR/RACE` for `RACE`).
