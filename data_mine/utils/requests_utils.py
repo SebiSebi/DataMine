@@ -62,6 +62,8 @@ def download_file(url, output_file_path, expected_sha256=None):
 
 def download_file_if_missing(url, output_file_path, expected_sha256=None):
     """
+    Downloads the resource from `url` and saves it locally only if missing.
+
     If the file exists and the sha256 sum is correct, then no download is
     performed. Otherwise the file is downloaded from the given URL.
     The sha256 sum will be always verified (if provided). Therefore, if
