@@ -11,8 +11,9 @@ from tqdm import tqdm
 
 def download_file(url, output_file_path, expected_sha256=None):
     """
-    Downloads the resource from `url` and saves the bytes to the
-    output file (no decoding is performed, raw data is saved).
+    Downloads the resource from `url` and saves it to the `output_file_path`.
+
+    No decoding is performed, raw data is retrieved and saved to the disk.
 
     If the expected SHA256 is provided, the data is checked for
     corruption. If the data is corrupted, a RuntimeError is raised.
