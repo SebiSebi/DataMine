@@ -28,9 +28,14 @@ pep8:
 pep257:
   run: true
   disable:
+    - D100
+    - D101
+    - D102
+    - D103
     - D203
     - D213
     - D400
+    - D401
     - D404
 
 pyflakes:
