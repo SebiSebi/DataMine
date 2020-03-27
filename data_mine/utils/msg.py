@@ -16,7 +16,7 @@ def maybe_exit(f):
     if six.PY3:
         args = inspect.getfullargspec(f).args
     else:
-        args = inspect.getargspec(f).args
+        args = inspect.getargspec(f).args  # pylint: disable=deprecated-method
     assert(len(args) == 2)
     assert(args[0] == "message")
     assert(args[1] == "exit")
@@ -58,7 +58,7 @@ def fmt(message, prefix):
 
 
 @maybe_exit
-def info(message, exit=None):
+def info(message, exit=None):  # pylint: disable=unused-argument
     """
     Displays a message in info style. If `exit` is not None, then
     the program is terminated with the provided exit code.
@@ -68,7 +68,7 @@ def info(message, exit=None):
 
 
 @maybe_exit
-def warning(message, exit=None):
+def warning(message, exit=None):  # pylint: disable=unused-argument
     """
     Displays a message in info style. If `exit` is not None, then
     the program is terminated with the provided exit code.
@@ -78,7 +78,7 @@ def warning(message, exit=None):
 
 
 @maybe_exit
-def error(message, exit=None):
+def error(message, exit=None):  # pylint: disable=unused-argument
     """
     Displays a message in error style. If `exit` is not None, then
     the program is terminated with the provided exit code.

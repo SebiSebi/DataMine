@@ -16,13 +16,17 @@ pylint:
   run: true
   disable:
     - bad-builtin
-    # Line length is check py Flake8.
-    - line-too-long
+    - import-error
+    - line-too-long  # Line length is check py Flake8.
     - missing-docstring
     - star-args
     - superfluous-parens
     - too-few-public-methods
     - wrong-import-order
+    - wrong-import-position
+    - W0142  # Used * or ** magic
+  options:
+    good-names: _,i,j,k,v,e,db,fn,fp,log,parser,id,f,g
 
 pep8:
   run: true
@@ -32,10 +36,10 @@ pep8:
 pep257:
   run: true
   disable:
-    - D100
-    - D101
-    - D102
-    - D103
+    - D100  # Missing docstring in public module
+    - D101  # Missing docstring in public class
+    - D102  # Missing docstring in public method
+    - D103  # Missing docstring in public function
     - D203
     - D213
     - D400
