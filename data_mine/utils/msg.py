@@ -22,14 +22,14 @@ def maybe_exit(f):
     assert(args[1] == "exits")
 
     def wrapper(*args, **kwargs):
-        exit = kwargs.get("exits", None)
-        if exit is None and len(args) >= 2:
-            exit = args[1]
+        exit_code = kwargs.get("exits", None)
+        if exit_code is None and len(args) >= 2:
+            exit_code = args[1]
 
         ret_value = f(*args, **kwargs)
 
-        if exit is not None:
-            sys.exit(exit)
+        if exit_code is not None:
+            sys.exit(exit_code)
         return ret_value
     return wrapper
 
