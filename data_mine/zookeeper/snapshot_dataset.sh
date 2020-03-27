@@ -7,13 +7,14 @@ fi
 
 dataset_dir=$1
 
-if [[ "${dataset_dir}" == *\/ ]]; then
+if [[ "${dataset_dir}" == */ ]]; then
 	echo "The directory path should not end with a slash (/)."
 	exit 2
 fi
 
-for path in $(find ${dataset_dir} -type f -printf '%P\n')
+# shellcheck disable=SC2044
+for path in $(find "${dataset_dir}" -type f -printf '%P\n')
 do
-	sha256=($(sha256sum ${dataset_dir}/${path}))
+	sha256=($(sha256sum "${dataset_dir}"/"${path}"))
 	echo "${sha256}  ${path}"
 done
