@@ -2,13 +2,13 @@ from setuptools import setup
 
 
 # Read repository information. This will be used as the package description.
-long_description = None
+LONG_DESCRIPTION = None
 with open('README_PyPI.md', 'r', encoding='utf-8') as f:
-    long_description = f.read()
-assert(long_description is not None)
+    LONG_DESCRIPTION = f.read()
+assert(LONG_DESCRIPTION is not None)
 
 
-requirements = [
+REQUIREMENTS = [
         # 'TODO(sebisebi)': add
 ]
 
@@ -16,7 +16,7 @@ setup(
     name='data_mine',
     version='0.0.1',
     description='DataMine is a collection of datasets ready to be used for machine learning applications and not only.',  # noqa: E501
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
     author='sebisebi',
     author_email='gpirtoaca@gmail.com',
@@ -26,7 +26,7 @@ setup(
         'data_mine',
     ],
     package_dir={'data_mine': 'data_mine'},
-    install_requires=requirements,
+    install_requires=REQUIREMENTS,
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     keywords='machine learning datasets data collection',
     classifiers=[
