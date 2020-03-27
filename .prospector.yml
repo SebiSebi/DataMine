@@ -17,6 +17,7 @@ pylint:
   disable:
     - bad-builtin
     - import-error
+    - import-outside-toplevel
     - line-too-long  # Line length is check py Flake8.
     - missing-docstring
     - star-args
