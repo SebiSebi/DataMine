@@ -1,0 +1,40 @@
+output-format: grouped
+strictness: veryhigh
+doc-warnings: true
+test-warnings: false
+
+dodgy:
+  run: true
+
+frosted:
+  run: true
+
+mccabe:
+  run: true
+
+pylint:
+  run: true
+  disable:
+    - bad-builtin
+    - too-few-public-methods
+    - missing-docstring
+    - star-args
+
+pep8:
+  run: true
+  disable:
+    - E126
+
+pep257:
+  run: true
+  disable:
+    - D203
+    - D213
+    - D400
+    - D404
+
+pyflakes:
+  run: true
+
+pyroma:
+  run: true
