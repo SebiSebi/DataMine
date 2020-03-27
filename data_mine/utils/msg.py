@@ -9,7 +9,7 @@ import sys
 
 
 def maybe_exit(f):
-    # Decorator function that checks if `exit` argument is provided.
+    # Decorator function that checks if `exits` argument is provided.
     # If so, terminates the program with the provided exit code.
 
     args = None
@@ -19,10 +19,10 @@ def maybe_exit(f):
         args = inspect.getargspec(f).args  # pylint: disable=deprecated-method
     assert(len(args) == 2)
     assert(args[0] == "message")
-    assert(args[1] == "exit")
+    assert(args[1] == "exits")
 
     def wrapper(*args, **kwargs):
-        exit = kwargs.get("exit", None)
+        exit = kwargs.get("exits", None)
         if exit is None and len(args) >= 2:
             exit = args[1]
 
@@ -35,7 +35,7 @@ def maybe_exit(f):
 
 # DO NOT Change the order of the arguments in message functions.
 # * `message` must be the first one.
-# * `exit` must be the second one.
+# * `exits` must be the second one.
 # We could have used keyword-only arguments but those are only
 # available in Python 3 and we don't want to drop Python 2 yet.
 
@@ -58,9 +58,9 @@ def fmt(message, prefix):
 
 
 @maybe_exit
-def info(message, exit=None):  # pylint: disable=unused-argument
+def info(message, exits=None):  # pylint: disable=unused-argument
     """
-    Displays a message in info style. If `exit` is not None, then
+    Displays a message in info style. If `exits` is not None, then
     the program is terminated with the provided exit code.
     """
     print(crayons.cyan(fmt(message, "[✓]"), bold=True))
@@ -68,9 +68,9 @@ def info(message, exit=None):  # pylint: disable=unused-argument
 
 
 @maybe_exit
-def warning(message, exit=None):  # pylint: disable=unused-argument
+def warning(message, exits=None):  # pylint: disable=unused-argument
     """
-    Displays a message in info style. If `exit` is not None, then
+    Displays a message in info style. If `exits` is not None, then
     the program is terminated with the provided exit code.
     """
     print(crayons.yellow(fmt(message, "[!]"), bold=True))
@@ -78,9 +78,9 @@ def warning(message, exit=None):  # pylint: disable=unused-argument
 
 
 @maybe_exit
-def error(message, exit=None):  # pylint: disable=unused-argument
+def error(message, exits=None):  # pylint: disable=unused-argument
     """
-    Displays a message in error style. If `exit` is not None, then
+    Displays a message in error style. If `exits` is not None, then
     the program is terminated with the provided exit code.
     """
     print(crayons.red(fmt(message, "[✗]"), bold=True))

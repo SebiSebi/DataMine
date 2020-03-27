@@ -22,7 +22,7 @@ class TestMsgFunctions(unittest.TestCase):
         for fn in [msg.info, msg.warning, msg.error]:
             exit_code = random.randint(1, 127)
             with self.assertRaises(SystemExit) as context:
-                fn("fake msg 1", exit=exit_code)
+                fn("fake msg 1", exits=exit_code)
             self.assertEqual(context.exception.code, exit_code)
 
             exit_code = random.randint(1, 127)

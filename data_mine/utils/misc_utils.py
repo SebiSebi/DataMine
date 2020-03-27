@@ -46,7 +46,7 @@ def datamine_cache_dir():
     # Create the directory (including the parents), if missing.
     with _DATAMINE_CACHE_DIR_LOCK:
         if os.path.isfile(cache_dir):
-            msg.error("The cached directory `{}` is a file.".format(cache_dir), exit=1)  # noqa: E501
+            msg.error("The cached directory `{}` is a file.".format(cache_dir), exits=1)  # noqa: E501
         elif not os.path.isdir(cache_dir):
             os.makedirs(cache_dir, mode=0o755)
     return cache_dir
