@@ -29,9 +29,10 @@
                             "additionalProperties": false
                         },
 			"minItems": 1
-                    }
+                    },
+		    "expectedFiles": {"type": "string"}
                 },
-                "required": ["requirements"],
+                "required": ["requirements", "expectedFiles"],
                 "additionalProperties": false
             }
         },
