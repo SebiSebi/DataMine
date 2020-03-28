@@ -1,3 +1,3 @@
 #!/bin/bash
 
-green -vvv
+green -vvv tests/
