@@ -1,6 +1,10 @@
+import os
 import unittest
 
+from data_mine.nlp.RACE import RACEType
 from data_mine.nlp.RACE.utils import next_question_id
+from data_mine.nlp.RACE.utils import type_to_data_directory
+from data_mine.utils import datamine_cache_dir
 
 
 class TestUtilFunctions(unittest.TestCase):
@@ -31,6 +35,33 @@ class TestUtilFunctions(unittest.TestCase):
         self.assertEqual(next_question_id(ids2, "B"), "1-B")
         self.assertEqual(next_question_id(ids, "A"), "4-A")
         self.assertEqual(next_question_id(ids, "B"), "3-B")
+
+    def test_type_to_data_directory(self):
+        DATA_DIR = os.path.join(datamine_cache_dir(), "RACE")
+        self.assertEqual(
+            type_to_data_directory(RACEType.TRAIN_MIDDLE),
+            os.path.join(DATA_DIR, "RACE", "train", "middle")
+        )
+        self.assertEqual(
+            type_to_data_directory(RACEType.DEV_MIDDLE),
+            os.path.join(DATA_DIR, "RACE", "dev", "middle")
+        )
+        self.assertEqual(
+            type_to_data_directory(RACEType.TEST_MIDDLE),
+            os.path.join(DATA_DIR, "RACE", "test", "middle")
+        )
+        self.assertEqual(
+            type_to_data_directory(RACEType.TRAIN_HIGH),
+            os.path.join(DATA_DIR, "RACE", "train", "high")
+        )
+        self.assertEqual(
+            type_to_data_directory(RACEType.DEV_HIGH),
+            os.path.join(DATA_DIR, "RACE", "dev", "high")
+        )
+        self.assertEqual(
+            type_to_data_directory(RACEType.TEST_HIGH),
+            os.path.join(DATA_DIR, "RACE", "test", "high")
+        )
 
 
 if __name__ == '__main__':
