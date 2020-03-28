@@ -15,7 +15,7 @@ def maybe_exit(f):
     args = None
     if six.PY3:  # pragma: no cover
         args = inspect.getfullargspec(f).args
-    else:
+    else:  # pragma: no cover
         args = inspect.getargspec(f).args  # pylint: disable=deprecated-method
     assert(len(args) == 2)
     assert(args[0] == "message")
