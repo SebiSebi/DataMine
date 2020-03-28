@@ -13,7 +13,7 @@ def maybe_exit(f):
     # If so, terminates the program with the provided exit code.
 
     args = None
-    if six.PY3:
+    if six.PY3:  # pragma: no cover
         args = inspect.getfullargspec(f).args
     else:
         args = inspect.getargspec(f).args  # pylint: disable=deprecated-method

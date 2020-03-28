@@ -5,6 +5,7 @@ import pandas as pd
 from .types import RACEType
 from .utils import next_question_id
 from .utils import type_to_data_directory
+from six import string_types
 
 
 def RACEDataset(race_type):
@@ -66,17 +67,17 @@ def RACEDataset(race_type):
             options = entry["options"]
             answers = entry["answers"]
             q_id = entry["id"]
-            assert(isinstance(article, str))
+            assert(isinstance(article, string_types))
             assert(isinstance(questions, list))
             assert(isinstance(options, list))
             assert(isinstance(answers, list))
-            assert(isinstance(q_id, str))
+            assert(isinstance(q_id, string_types))
             assert(len(questions) == len(options))
             assert(len(questions) == len(answers))
             for question, option, answer in zip(questions, options, answers):
-                assert(isinstance(question, str))
+                assert(isinstance(question, string_types))
                 assert(isinstance(option, list) and len(option) == 4)
-                assert(isinstance(answer, str))
+                assert(isinstance(answer, string_types))
                 assert(answer in ["A", "B", "C", "D"])
                 all_data.append({
                     'article': article,
