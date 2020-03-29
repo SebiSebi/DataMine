@@ -21,3 +21,21 @@ def is_archive(filepath):
         return True
     except patoolib.util.PatoolError:
         return False
+
+
+def extract_archive(filepath, outdir):
+    """
+    Extracts the contents of the archive in the output directory.
+
+    The output directory is required and must be a valid file-system path.
+    The output directory and all parent directories are created if missing.
+    An exception is raised if the archive does not exist, is not readable
+    or is not a valid archive (best guess, not all formats are supported).
+    """
+    assert(is_archive(filepath))
+    patoolib.extract_archive(
+            filepath,
+            verbosity=-1,
+            outdir=outdir,
+            interactive=False
+    )

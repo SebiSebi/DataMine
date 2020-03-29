@@ -1,12 +1,23 @@
 import json
+import os
 import random
+import shutil
+import sys
 import unittest
 import numpy as np
 
 from PIL import Image
-from data_mine.utils import is_archive
+from data_mine.utils import extract_archive, is_archive
 from faker import Faker
 from pyfakefs.fake_filesystem_unittest import TestCase
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+if sys.version_info >= (3, 3):
+    from unittest.mock import patch
+else:
+    from mock import patch
 
 
 class TestArchiveUtils(TestCase):
@@ -14,6 +25,29 @@ class TestArchiveUtils(TestCase):
     def setUp(self):
         self.setUpPyfakefs()
         self.fake = Faker()
+        self.OUTDIR = "/extracted/inner/"
+        os.makedirs(self.OUTDIR, mode=0o755)
+
+        # We also want to test that nothing is logged to stdout or stderr.
+        # Mock the `sys.stdout` and `sys.stderr` buffers to fake outputs
+        # so that we can test them.
+        stdout_patcher = patch('sys.stdout', new_callable=StringIO)
+        stderr_patcher = patch('sys.stderr', new_callable=StringIO)
+        self.addCleanup(stdout_patcher.stop)
+        self.addCleanup(stderr_patcher.stop)
+        self.mock_stdout = stdout_patcher.start()
+        self.mock_stderr = stderr_patcher.start()
+
+    def tearDown(self):
+        self.assertEqual(self.mock_stdout.getvalue(), "")
+        self.assertEqual(self.mock_stderr.getvalue(), "")
+        shutil.rmtree(self.OUTDIR)
+
+    def num_extracted_files(self):
+        total = 0
+        for _, _, files in os.walk(self.OUTDIR):
+            total += len(files or [])
+        return total
 
     #####################################################################
     #                          Archive formats                          #
@@ -113,6 +147,43 @@ class TestArchiveUtils(TestCase):
     def test_is_archive_for_png(self):
         self.create_png()
         self.assertFalse(is_archive("/file.png"))
+
+    def test_extract_archive_when_file_is_missing(self):
+        with self.assertRaises(AssertionError):
+            extract_archive("/some/missing/file/2", "not important")
+
+    def test_extract_invalid_archive(self):
+        self.create_json()
+        with self.assertRaises(AssertionError):
+            extract_archive("/file.json", self.OUTDIR)
+
+    def test_extract_archive_to_missing_output_directory(self):
+        self.create_tar()
+        self.assertTrue(os.path.isdir(self.OUTDIR))
+        shutil.rmtree(self.OUTDIR)
+        self.assertFalse(os.path.isdir(self.OUTDIR))
+        extract_archive("/arch.tar", self.OUTDIR)
+        self.assertTrue(os.path.isdir(self.OUTDIR))
+
+    def test_extract_archive_for_tar(self):
+        self.create_tar()
+        extract_archive("/arch.tar", self.OUTDIR)
+        self.assertEqual(self.num_extracted_files(), 7)
+
+    def test_extract_archive_for_tar_bzip2(self):
+        self.create_tar_bzip2()
+        extract_archive("/arch.tar.bz2", self.OUTDIR)
+        self.assertEqual(self.num_extracted_files(), 10)
+
+    def test_extract_archive_for_tar_gzip(self):
+        self.create_tar_gzip()
+        extract_archive("/arch.tar.gz", self.OUTDIR)
+        self.assertEqual(self.num_extracted_files(), 15)
+
+    def test_extract_archive_for_zip(self):
+        self.create_zip()
+        extract_archive("/arch.zip", self.OUTDIR)
+        self.assertEqual(self.num_extracted_files(), 21)
 
 
 if __name__ == '__main__':
