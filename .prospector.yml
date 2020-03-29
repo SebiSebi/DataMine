@@ -42,7 +42,8 @@ pep257:
     - D102  # Missing docstring in public method
     - D103  # Missing docstring in public function
     - D203
-    - D213
+    - D212  # Multi-line docstring summary should start at the first line
+    - D213  # Multi-line docstring summary should start at the second line
     - D400
     - D401
     - D404
