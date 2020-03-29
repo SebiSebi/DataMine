@@ -2,6 +2,7 @@ import json
 import os
 import random
 import shutil
+import six
 import sys
 import unittest
 import numpy as np
@@ -158,18 +159,20 @@ class TestArchiveUtils(TestCase):
             extract_archive("/file.json", self.OUTDIR)
 
     def test_extract_archive_to_missing_output_directory(self):
-        self.create_tar()
+        self.create_zip()
         self.assertTrue(os.path.isdir(self.OUTDIR))
         shutil.rmtree(self.OUTDIR)
         self.assertFalse(os.path.isdir(self.OUTDIR))
-        extract_archive("/arch.tar", self.OUTDIR)
+        extract_archive("/arch.zip", self.OUTDIR)
         self.assertTrue(os.path.isdir(self.OUTDIR))
 
+    @unittest.skipIf(six.PY2, "Skipping due to tarfile issue in pyfakefs.")
     def test_extract_archive_for_tar(self):
         self.create_tar()
         extract_archive("/arch.tar", self.OUTDIR)
         self.assertEqual(self.num_extracted_files(), 7)
 
+    @unittest.skipIf(six.PY2, "Skipping due to tarfile issue in pyfakefs.")
     def test_extract_archive_for_tar_bzip2(self):
         self.create_tar_bzip2()
         extract_archive("/arch.tar.bz2", self.OUTDIR)
