@@ -1,7 +1,9 @@
 Faker
+Pillow>=6.2.2
 codecov
 coverage
 mock; python_version < '3.3'
+numpy>=1.16.6
 pyfakefs>=3.7.1
 pytest>=4.6.9
 pytest-cov>=2.8.1
