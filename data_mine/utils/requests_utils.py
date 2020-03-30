@@ -9,7 +9,7 @@ from six import string_types
 from tqdm import tqdm
 
 
-def download_file(url, output_file_path, expected_sha256=None):
+def download_file(url, output_file_path, expected_sha256=None, desc=None):
     """
     Downloads the resource from `url` and saves it to the `output_file_path`.
 
@@ -17,6 +17,10 @@ def download_file(url, output_file_path, expected_sha256=None):
 
     If the expected SHA256 is provided, the data is checked for
     corruption. If the data is corrupted, a RuntimeError is raised.
+
+    Note: `desc` is a description to be shown during the download process.
+    If None, a generic message will be shown. The description must not contain
+    special Unicode characters (e.g. must be ASCII decodable).
     """
     assert(isinstance(url, string_types))
     assert(isinstance(output_file_path, string_types))
@@ -41,7 +45,8 @@ def download_file(url, output_file_path, expected_sha256=None):
         total_size = int(req.headers.get('content-length', 0))  # in bytes.
         block_size = 1 * 1024 * 1024
 
-        progress_bar = tqdm(total=total_size, unit='B', unit_scale=True)
+        desc = desc or "Downloading file"
+        progress_bar = tqdm(desc=desc, total=total_size, unit='B', unit_scale=True)  # noqa: E501
         sha256 = hashlib.sha256()
         with open(output_file_path, 'wb') as g:
             for data in data_iterator(req.raw, block_size):
@@ -60,7 +65,7 @@ def download_file(url, output_file_path, expected_sha256=None):
             )
 
 
-def download_file_if_missing(url, output_file_path, expected_sha256=None):
+def download_file_if_missing(url, output_file_path, expected_sha256=None, desc=None):  # noqa: E501
     """
     Downloads the resource from `url` and saves it locally only if missing.
 
@@ -73,6 +78,10 @@ def download_file_if_missing(url, output_file_path, expected_sha256=None):
     Note: if `expected_sha256` is not provided (e.g. None) then no integrity
     chech is performed. That is, it only matters if the file is found on the
     local disk (corrupted or not).
+
+    Note: `desc` is a description to be shown during the download process.
+    If None, a generic message will be shown. The description must not contain
+    special Unicode characters (e.g. must be ASCII decodable).
     """
     assert(isinstance(url, string_types))
     assert(isinstance(output_file_path, string_types))
@@ -87,4 +96,4 @@ def download_file_if_missing(url, output_file_path, expected_sha256=None):
         return  # The file could be found locally.
 
     # Otherwise, download the data from the provided URL.
-    download_file(url, output_file_path, expected_sha256)
+    download_file(url, output_file_path, expected_sha256, desc)

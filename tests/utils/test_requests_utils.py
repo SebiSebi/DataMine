@@ -1,12 +1,23 @@
+# -*- coding: utf-8 -*-
+
 import os
 import requests
 import responses
+import sys
 import unittest
 
 from data_mine.utils import download_file
 from data_mine.utils import download_file_if_missing
 from faker import Faker
 from tempfile import mkstemp
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+if sys.version_info >= (3, 3):
+    from unittest.mock import patch
+else:
+    from mock import patch
 
 FAKE_URL = "http://my-fake-url-for-testing/unique"
 
@@ -228,6 +239,35 @@ class TestDownloadFileIfMissingFn(unittest.TestCase):
         download_file_if_missing(FAKE_URL, temp_file_path)
         self.assertTrue(os.path.isfile(temp_file_path))
         self.assertFalse(self.good_data(temp_file_path))
+        os.remove(temp_file_path)
+
+    @responses.activate
+    def test_description_is_provided(self):
+        fake = Faker()
+        fake_suffix = fake.pystr(min_chars=15, max_chars=25)
+        temp_fd, temp_file_path = mkstemp(suffix=fake_suffix)
+        del fake_suffix
+
+        os.close(temp_fd)
+        os.remove(temp_file_path)
+
+        self.fake_download_response()
+
+        message = "We are downloading some data"
+        self.assertFalse(os.path.isfile(temp_file_path))
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            with patch('sys.stderr', new_callable=StringIO) as mock_stderr:
+                download_file_if_missing(
+                        FAKE_URL, temp_file_path,
+                        expected_sha256=self.correct_sha256,
+                        desc=message
+                )
+        self.assertTrue(
+                message in mock_stdout.getvalue() or
+                message in mock_stderr.getvalue()
+        )
+        self.assertTrue(os.path.isfile(temp_file_path))
+        self.assertTrue(self.good_data(temp_file_path))
         os.remove(temp_file_path)
 
 
