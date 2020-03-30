@@ -5,6 +5,14 @@ import threading
 from data_mine.constants import DATAMINE_CACHE_DIR_ENV_VAR
 from data_mine.utils import msg
 from six import string_types
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
+try:
+    from urllib.parse import unquote_plus
+except ImportError:
+    from urllib import unquote_plus
 
 # Protects the operations in the `datamine_cache_dir` function.
 _DATAMINE_CACHE_DIR_LOCK = threading.Lock()
@@ -72,3 +80,22 @@ def file_sha256(file_path):
         for chunk in read_in_chunks(f, 1024 * 1024):  # 1MB
             sha256.update(chunk)
     return sha256.hexdigest()
+
+
+def url_to_filename(url):
+    """
+    Returns the filename from the URL specification.
+
+    Example: `http://website.com/kyle/dir/img.jpg` -> `img.jpg`.
+    It can parse arbitrary (valid) urls including those that contain
+    complext query strings and percent encodings.
+
+    If no filename can be found in the URL, the function returns None.
+    Example: `http://website.com` -> None
+    Example: `http://website.com/dir/` -> None
+    """
+    path = urlparse(url).path
+    if not path:
+        return None
+    path = unquote_plus(path)  # Deal with percent encoding.
+    return os.path.basename(path) or None

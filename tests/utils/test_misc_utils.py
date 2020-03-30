@@ -6,6 +6,7 @@ from data_mine.constants import DATAMINE_CACHE_DIR_ENV_VAR
 from data_mine.utils import datamine_cache_dir
 from data_mine.utils import file_sha256
 from data_mine.utils import get_home_dir
+from data_mine.utils import url_to_filename
 from faker import Faker
 from tempfile import mkstemp
 try:
@@ -134,6 +135,57 @@ class TestMiscUtils(unittest.TestCase):
             with patch('os.path.isdir', return_value=True):
                 cache_dir = datamine_cache_dir()
             mock_isfile.assert_called_once_with(cache_dir)
+
+    #########################################################################
+    #                            url_to_filename()                          #
+    #########################################################################
+
+    def test_url_to_filename(self):
+        # url_to_filename("What a nice car")
+        self.assertEqual(
+                url_to_filename("http://website.com/kyle/dir/img.jpg"),
+                "img.jpg"
+        )
+        self.assertEqual(
+                url_to_filename("http://website.com/img2.png"),
+                "img2.png"
+        )
+        self.assertEqual(  # It works with query strings.
+                url_to_filename("http://ph.com/seb/09-09-2013-677.jpg?s=100p"),
+                "09-09-2013-677.jpg"
+        )
+        self.assertIsNone(url_to_filename("http://website.com"))
+        self.assertIsNone(url_to_filename("http://website.com/"))
+        self.assertIsNone(url_to_filename("http://website.com/dir/"))
+        self.assertEqual(
+                url_to_filename("http://website.com/file_no_extension"),
+                "file_no_extension"
+        )
+        self.assertEqual(
+                url_to_filename("https://web.com/Hello+G%C3%BCnter.txt"),
+                "Hello Günter.txt"
+        )
+        self.assertEqual(
+                url_to_filename("https://web.com/url%20end_url"),
+                "url end_url"
+        )
+        self.assertEqual(
+                url_to_filename("https://web.com/url+end_url"),
+                "url end_url"
+        )
+        self.assertEqual(
+                url_to_filename("https://web.ro/A%25B.json"),
+                "A%B.json"
+        )
+        self.assertEqual(
+                url_to_filename("https://web.ro/A%26B.json"),
+                "A&B.json"
+        )
+        self.assertEqual(
+                url_to_filename("https://secure.flickr.com/search%25%20/qs%20file%26.txt?q=gardens&l=com%20deriv&ct=0&mt=all&adv=1"),  # noqa: E501
+                "qs file&.txt"
+        )
+        self.assertIsNone(url_to_filename(""))
 
 
 if __name__ == '__main__':
