@@ -3,12 +3,12 @@ import os
 import random
 import unittest
 
-from data_mine.zookeeper.download_center import load_config_file
+from data_mine.zookeeper.utils import load_integrity_file
 from faker import Faker
 from tempfile import mkstemp
 
 
-class TestLoadConfigFileFn(unittest.TestCase):
+class TestLoadIntegrityFileFn(unittest.TestCase):
 
     def setUp(self):
         self.fake = Faker()
@@ -57,7 +57,7 @@ class TestLoadConfigFileFn(unittest.TestCase):
             g.flush()
 
     def read_from_file(self):
-        return list(load_config_file(self.temp_file_path))
+        return list(load_integrity_file(self.temp_file_path))
 
     def test_under_normal_conditions(self):
         entries = self.generate_good_data()
