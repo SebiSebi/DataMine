@@ -253,7 +253,7 @@ class TestDownloadFileIfMissingFn(unittest.TestCase):
 
         self.fake_download_response()
 
-        message = "We are downloading some data"
+        message = "We are downloading some data.,!?=-"
         self.assertFalse(os.path.isfile(temp_file_path))
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
             with patch('sys.stderr', new_callable=StringIO) as mock_stderr:

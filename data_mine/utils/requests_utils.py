@@ -3,10 +3,12 @@
 import hashlib
 import os
 import requests
+import six
 
 from data_mine.utils import file_sha256
 from six import string_types
 from tqdm import tqdm
+from unidecode import unidecode
 
 
 def download_file(url, output_file_path, expected_sha256=None, desc=None):
@@ -45,7 +47,10 @@ def download_file(url, output_file_path, expected_sha256=None, desc=None):
         total_size = int(req.headers.get('content-length', 0))  # in bytes.
         block_size = 1 * 1024 * 1024
 
-        desc = desc or "Downloading file"
+        desc = str(desc or "Downloading file")
+        if six.PY2:  # pragma: no cover
+            desc = desc.decode('utf-8', 'replace')
+        desc = unidecode(desc)  # Remove non-ASCII characters.
         progress_bar = tqdm(desc=desc, total=total_size, unit='B', unit_scale=True)  # noqa: E501
         sha256 = hashlib.sha256()
         with open(output_file_path, 'wb') as g:
