@@ -7,11 +7,11 @@ from data_mine.utils import msg
 from six import string_types
 try:
     from urllib.parse import urlparse
-except ImportError:
+except ImportError:  # pragma: no cover
     from urlparse import urlparse
 try:
     from urllib.parse import unquote_plus
-except ImportError:
+except ImportError:  # pragma: no cover
     from urllib import unquote_plus
 
 # Protects the operations in the `datamine_cache_dir` function.
