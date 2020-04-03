@@ -14,9 +14,9 @@
 Available datasets
 ------------------
 
-| Dataset             | Usage & Detailed Info            | Example(s)                |
-| ------------------- | -------------------------------- | --------------------------|
-| `RACE`              | [RACE Home][RACE-Home]           | [Simple][RACE-Example-1]  |
+| Dataset             | Usage & Detailed Info                    | Example(s)                      |
+| ------------------- | ---------------------------------------- | ------------------------------- |
+| `RACE`              | [Additional information][RACE-Home]      | [RACE Example][RACE-Example-1]  |
 
 
 [RACE-Home]: https://github.com/SebiSebi/DataMine/tree/master/data_mine/nlp/RACE
