@@ -32,7 +32,10 @@ class TestDatasetsConfiguration(unittest.TestCase):
     def test_all_prod_datasets_are_configured(self):
         config = load_datasets_config().keys()
         for dataset in self.collection:
-            self.assertIn(dataset, config)
+            self.assertIn(
+                    dataset, config,
+                    "Make sure all defined datasets are configured."
+            )
 
     def test_wrong_config_raises_error(self):
         bad_config = '''
