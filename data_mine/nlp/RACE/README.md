@@ -21,6 +21,59 @@ state-of-the-art models (43%) and the ceiling human performance (95%).
 * [Leaderboard](http://www.qizhexie.com/data/RACE_leaderboard)
 
 
+How to use
+----------
+
+```python
+import data_mine as dm
+
+from data_mine.nlp.RACE import RACEType
+
+
+def main():
+    df = dm.RACE(RACEType.DEV_MIDDLE)
+    print(df)  # Shows something similar to the example below.
+
+
+if __name__ == "__main__":
+    main()
+```
+
+The following RACE types are available:
+1. `TRAIN_MIDDLE`
+2. `TRAIN_HIGH`
+3. `DEV_MIDDLE`
+4. `DEV_HIGH`
+5. `TEST_MIDDLE`
+6. `TEST_HIGH`
+
+Scheme (RACE DataFrame)
+-----------------------
+
+The loading function (`data_mine.nlp.RACE.RACEDataset` or `dm.RACE`) returns a
+Pandas DataFrame with 5 columns:
+* `article`: string;
+* `question`: string;
+* `answers`: list[string], length is always 4;
+* `correct`: oneof('A', 'B', 'C', D');
+* `id`: string (please read the caveat regarding the semantics of this ID).
+
+Example:
+```
+                                                article                                           question                                            answers correct                id
+0     Jess really felt very happy. When he arrived a...    What would happen if Cindy told Jess the truth?  [Jess would go on the camping trip himself., J...       C  1-middle2414.txt
+1     Jess really felt very happy. When he arrived a...       If Jess really bought a sleeping bag,   _  .  [everyone else would also buy one, He would ha...       B  2-middle2414.txt
+2     Jess really felt very happy. When he arrived a...                      From the story we know   _  .  [everybody would go camping in the class, Jess...       B  3-middle2414.txt
+3     Jess really felt very happy. When he arrived a...          Which is the best title for this passage?  [Jess and His School, Jess and His Friends, An...       C  4-middle2414.txt
+4     Have you felt annoyed when a cell phone  rings...   . Elizabeth Lorris Ritter is worried that   _  .  [students are not allowed to bring cellphones,...       A   1-middle758.txt
+...                                                 ...                                                ...                                                ...     ...               ...
+1431  Many rules govern drivers on American streets ...                  The passage is mainly about  _  .  [rush hours, American drivers, traffic rules, ...       C  3-middle5390.txt
+1432  Nature Nurtures Farm plans to organize some ch...  why does Nature Nurtures Farm plan to organize...  [To make visitors have fun., To help young peo...       C  1-middle6863.txt
+1433  Nature Nurtures Farm plans to organize some ch...  There are   _  charity activities in this summer.                           [two, three, four, five]       B  2-middle6863.txt
+1434  Nature Nurtures Farm plans to organize some ch...  If Miss Jackson is free on the afternoon of Ju...  [Farm Festival, Art Show, Nature Nurtures Farm...       B  3-middle6863.txt
+1435  Nature Nurtures Farm plans to organize some ch...                Who can join the Mentoring Program?  [Lisa ,5 years old., Tim, 6 years old., Bob, 1...       C  4-middle6863.txt
+```
+
 Question ID caveat
 ------------------
 
