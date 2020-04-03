@@ -1,10 +1,11 @@
+import data_mine as dm
 import os
 import pandas as pd
 import random
 import unittest
 
 from data_mine import Collection
-from data_mine.nlp.RACE import RACEDataset, RACEType
+from data_mine.nlp.RACE import RACEType
 from data_mine.utils import datamine_cache_dir
 from pyfakefs.fake_filesystem_unittest import TestCase
 
@@ -84,7 +85,7 @@ class TestRACEDatasetLoader(TestCase):
                 g.flush()
 
     def test_parsing(self):
-        data = RACEDataset(RACEType.TRAIN_MIDDLE)
+        data = dm.RACE(RACEType.TRAIN_MIDDLE)
         self.assertIsInstance(data, pd.DataFrame)
         self.assertEqual(len(data), 4)
         self.assertEqual(data.shape, (4, 5))
