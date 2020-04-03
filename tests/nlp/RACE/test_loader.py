@@ -2,12 +2,17 @@ import data_mine as dm
 import os
 import pandas as pd
 import random
+import sys
 import unittest
 
 from data_mine import Collection
 from data_mine.nlp.RACE import RACEType
 from data_mine.utils import datamine_cache_dir
 from pyfakefs.fake_filesystem_unittest import TestCase
+if sys.version_info >= (3, 3):
+    from unittest.mock import ANY, patch
+else:
+    from mock import ANY, patch
 
 FAKE_FILES = [
         ("1125.json", """
@@ -84,7 +89,8 @@ class TestRACEDatasetLoader(TestCase):
                 g.write(contents)
                 g.flush()
 
-    def test_parsing(self):
+    @patch('data_mine.nlp.RACE.loader.download_dataset')
+    def test_parsing(self, mock_download_dataset):
         data = dm.RACE(RACEType.TRAIN_MIDDLE)
         self.assertIsInstance(data, pd.DataFrame)
         self.assertEqual(len(data), 4)
@@ -134,6 +140,7 @@ class TestRACEDatasetLoader(TestCase):
         self.assertEqual(index_count['2-id1'], 1)
         self.assertEqual(index_count['3-id1'], 1)
         self.assertEqual(index_count['1-id2'], 1)
+        mock_download_dataset.assert_called_once_with(Collection.RACE, ANY)
 
 
 if __name__ == '__main__':

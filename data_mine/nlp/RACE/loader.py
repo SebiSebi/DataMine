@@ -2,10 +2,12 @@ import json
 import os
 import pandas as pd
 
+from data_mine import Collection
+from data_mine.zookeeper import check_shallow_integrity, download_dataset
+from six import string_types
 from .types import RACEType
 from .utils import next_question_id
 from .utils import type_to_data_directory
-from six import string_types
 
 
 def RACEDataset(race_type):
@@ -30,6 +32,7 @@ def RACEDataset(race_type):
     using the per-passage-question counter.
     """
     assert(isinstance(race_type, RACEType))
+    download_dataset(Collection.RACE, check_shallow_integrity)
     dirpath = type_to_data_directory(race_type)
     all_data = []
     q_ids = {}
