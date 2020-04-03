@@ -17,7 +17,7 @@ def download():
     if dataset_name not in set([x.name for x in Collection]):
         msg.error("Invalid dataset: {}".format(dataset_name))
         msg.info("Available datasets:")
-        msg.info("\n".join([x.name for x in Collection]), exits=1)
+        msg.info("\n".join(sorted([x.name for x in Collection])), exits=1)
 
     dataset_id = Collection.from_str(dataset_name)
     msg.info("Checking if {} is already downloaded ...".format(dataset_name))
