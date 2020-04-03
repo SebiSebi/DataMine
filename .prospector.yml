@@ -27,7 +27,7 @@ pylint:
     - wrong-import-position
     - W0142  # Used * or ** magic
   options:
-    good-names: _,i,j,k,v,e,db,fn,fp,log,parser,id,f,g,d
+    good-names: _,i,j,k,v,e,db,fn,fp,log,parser,id,f,g,d,df
 
 pep8:
   run: true
