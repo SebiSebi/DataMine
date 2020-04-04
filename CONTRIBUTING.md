@@ -27,3 +27,9 @@ There are 2 scripts that can be use to execute tests:
 integration engine. Not recommended while developing and testing locally.
 2. `./green.sh` (uses `green`). This is **recommended** to be used
 while developing. It shows friendly messages and summaries.
+
+
+# Add new dataset
+
+All data files must have `.json` or `.txt.gz` extension to be included
+in the PyPI package (please see `setup.py`).
