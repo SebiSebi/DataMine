@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 # Read repository information. This will be used as the package description.
@@ -22,10 +22,7 @@ setup(
     author_email='gpirtoaca@gmail.com',
     url='https://github.com/SebiSebi/DataMine',
     license='Apache 2.0',
-    packages=[
-        'data_mine',
-    ],
-    package_dir={'data_mine': 'data_mine'},
+    packages=find_packages(),  # Anything with a __init__.py file.
     package_data={
         # If any package contains *.json or *.txt.gz files, include them.
         "": ["*.json", "*.txt.gz"],
