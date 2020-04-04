@@ -23,10 +23,6 @@ setup(
     url='https://github.com/SebiSebi/DataMine',
     license='Apache 2.0',
     packages=find_packages(),  # Anything with a __init__.py file.
-    package_data={
-        # If any package contains *.json or *.txt.gz files, include them.
-        "": ["*.json", "*.txt.gz"],
-    },
     include_package_data=True,  # Includes the files in MANIFEST.in
     install_requires=REQUIREMENTS,
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
