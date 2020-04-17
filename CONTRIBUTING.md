@@ -178,6 +178,10 @@ def ALLEN_AI_DROP(*args, **kwargs):
     from data_mine.nlp.allen_ai_drop import DROPDataset
     return DROPDataset(*args, **kwargs)
 ```
-
 **Note:** All data files you add should either be a `.json` or a `.txt.gz`. Other extensions
 will **not** be included in the PyPI package (please see `setup.py`).
+
+10. Commit and submit a push request. All the code needs to be tested.
+This [commit](https://github.com/SebiSebi/DataMine/commit/806825312ab8d225b2519e7611aa532dce1aa968)
+encapsulates all steps we described for adding the `ALLEN_AI_DROP` dataset.
+
