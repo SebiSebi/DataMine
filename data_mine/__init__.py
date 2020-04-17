@@ -11,3 +11,8 @@ from .collection import Collection
 def RACE(*args, **kwargs):
     from data_mine.nlp.RACE import RACEDataset
     return RACEDataset(*args, **kwargs)
+
+
+def ALLEN_AI_DROP(*args, **kwargs):
+    from data_mine.nlp.allen_ai_drop import DROPDataset
+    return DROPDataset(*args, **kwargs)

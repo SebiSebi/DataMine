@@ -8,7 +8,8 @@
             "dataset": {
                 "type": "string",
                 "enum": [
-                    "RACE"
+                    "RACE",
+		    "ALLEN_AI_DROP"
                 ]
             },
             "config": {

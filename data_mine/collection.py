@@ -5,6 +5,7 @@ from six import string_types
 @unique
 class Collection(Enum):
     RACE = 1
+    ALLEN_AI_DROP = 2
 
     @staticmethod
     def from_str(label):
