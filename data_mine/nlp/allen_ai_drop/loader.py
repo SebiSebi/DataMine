@@ -47,7 +47,7 @@ def DROPDataset(drop_type):
             if len(date) == 0:
                 return False
             assert(set(date.keys()) == set(["day", "month", "year"]))
-            return len(date["day"] + date["month"] + date["year"]) > 0
+            return len("" + date["day"] + date["month"] + date["year"]) > 0
 
         def is_span():
             return len(answer["spans"]) > 0
@@ -157,6 +157,7 @@ def DROPDataset(drop_type):
             all_questions.append({
                 "query_id": query_id,
                 "question": question,
+                "passage": passage,
                 "answer_type": answer_type,
                 "parsed_answer": parsed_answer,
                 "original_answer": answer
