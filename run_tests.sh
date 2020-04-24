@@ -1,3 +1,3 @@
 #!/bin/bash
 
-PYTHONPATH=$PWD:$PYTHONPATH py.test --cov=./data_mine tests/
+nosetests --with-coverage --cover-package="data_mine" --verbosity=2
