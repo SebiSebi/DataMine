@@ -99,7 +99,7 @@ class TestArchiveUtils(TestCase):
             g.flush()
 
     def create_json(self):
-        obj = self.fake.pydict(random.randint(10, 1000), False, str, int, bool)
+        obj = self.fake.pydict(random.randint(10, 30), False, str, int, bool)
         with open("/file.json", "wt") as g:
             g.write(json.dumps(obj, indent=4, sort_keys=True))
             g.flush()
