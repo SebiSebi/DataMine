@@ -92,6 +92,7 @@ venv.bak/
 env27/
 ENV27/
 .env27
+env3.5/
 
 # Spyder project settings
 .spyderproject
