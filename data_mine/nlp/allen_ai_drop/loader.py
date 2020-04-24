@@ -3,6 +3,7 @@ import pandas as pd
 
 from data_mine import Collection
 from data_mine.zookeeper import check_shallow_integrity, download_dataset
+from six import string_types
 from .types import DROPType
 from .utils import type_to_data_file
 
@@ -83,7 +84,7 @@ def DROPDataset(drop_type):
         entry = data[subject_id]
         assert(len(entry) == 3)  # passage, qa_pairs and wiki_url
         passage = entry["passage"]
-        assert(isinstance(passage, str))
+        assert(isinstance(passage, string_types))
         """
         {
             "question": "How many points were scored first?",
@@ -125,9 +126,9 @@ def DROPDataset(drop_type):
             question = qa_pair["question"]
             answer = qa_pair["answer"]
             query_id = qa_pair["query_id"]
-            assert(isinstance(question, str))
+            assert(isinstance(question, string_types))
             assert(isinstance(answer, dict))
-            assert(isinstance(query_id, str))
+            assert(isinstance(query_id, string_types))
 
             # This answer has 2 correct answers. Manually remove the false one.
             if query_id == "daf712ed-3849-48a1-b9b5-f7d21b0c0ab7":
