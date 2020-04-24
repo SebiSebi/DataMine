@@ -165,8 +165,6 @@ def DROPDataset(drop_type):
 You usually want to add this method to the `__init__.py` file of the dataset module:
 
 ```python
-from __future__ import absolute_import
-
 from .loader import DROPDataset
 from .types import DROPType
 ```
