@@ -5,7 +5,7 @@ from data_mine import Collection
 from data_mine.zookeeper import check_shallow_integrity, download_dataset
 from six import string_types
 from .types import DROPType
-from .utils import type_to_data_file
+from .utils import serialize_date, type_to_data_file
 
 
 def DROPDataset(drop_type):
@@ -62,10 +62,7 @@ def DROPDataset(drop_type):
         if is_date():
             assert(not is_number())
             assert(not is_span())
-            date = answer["date"].items()
-            date = filter(lambda x: len(x[1]) > 0, date)
-            date = [x[1] for x in sorted(date)]
-            return "date", " ".join(date)
+            return "date", serialize_date(answer["date"])
 
         if is_span():
             assert(not is_number())
@@ -74,12 +71,12 @@ def DROPDataset(drop_type):
 
         return None, None
 
-    all_query_ids = set()
-    all_questions = []
-    data = json.load(open(type_to_data_file(drop_type), "rt"))
     # The Subject ID represents the context category. Examples include
     # history_4122, nfl_3073 or history_3259. It seems that all questions
     # target NFL or history subjects.
+    all_query_ids = set()
+    all_questions = []
+    data = json.load(open(type_to_data_file(drop_type), "rt"))
     for subject_id in data:
         entry = data[subject_id]
         assert(len(entry) == 3)  # passage, qa_pairs and wiki_url
