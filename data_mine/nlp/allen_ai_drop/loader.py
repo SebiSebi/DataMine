@@ -77,7 +77,7 @@ def DROPDataset(drop_type):
     all_query_ids = set()
     all_questions = []
     data = json.load(open(type_to_data_file(drop_type), "rt"))
-    for subject_id in data:
+    for subject_id in sorted(data.keys()):
         entry = data[subject_id]
         assert(len(entry) == 3)  # passage, qa_pairs and wiki_url
         passage = entry["passage"]

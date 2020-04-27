@@ -155,7 +155,7 @@ VALID_QUESTIONS = """{
         ],
         "wiki_url": "https://en.wikipedia.org/wiki/Earl's_Court"
     },
-    "another_subject": {
+    "nfl_2": {
         "passage": "Passage 2",
         "qa_pairs": [
             {
