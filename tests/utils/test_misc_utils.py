@@ -9,6 +9,7 @@ from data_mine.utils import datamine_cache_dir
 from data_mine.utils import file_sha256
 from data_mine.utils import get_home_dir
 from data_mine.utils import is_integer
+from data_mine.utils import num_decimal_places
 from data_mine.utils import url_to_filename
 from faker import Faker
 from tempfile import mkstemp
@@ -212,6 +213,39 @@ class TestMiscUtils(unittest.TestCase):
             self.assertFalse(
                     is_integer(number),
                     "{} is not expected to be an integer.".format(number)
+            )
+
+    #########################################################################
+    #                         num_decimal_places()                          #
+    #########################################################################
+
+    def test_num_decimal_places(self):
+        tests = [
+                ("0.1", 1),
+                ("13.114", 3),
+                ("3.14", 2),
+                ("-45.123456789", 9),
+                ("12345.1234567890123456789", 19),
+                ("0.0000000001", 10),
+                (10, 0),
+                (0, 0),
+                (-134, 0)
+        ]
+        for number, expected_value in tests:
+            self.assertEqual(num_decimal_places(number), expected_value)
+
+        with self.assertRaises(ValueError):
+            num_decimal_places(0.1)
+
+        safe_floats = [
+                (1.0, 1),
+                (0.12345678912, 11),
+                (-3.14, 2),
+        ]
+        for number, expected_value in safe_floats:
+            self.assertEqual(
+                    num_decimal_places(number, safe=False),
+                    expected_value
             )
 
 

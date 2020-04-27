@@ -1,3 +1,4 @@
+import decimal
 import hashlib
 import os
 import threading
@@ -116,3 +117,32 @@ def is_integer(number):
         return number.is_integer()
     except ValueError:
         return False
+
+
+def num_decimal_places(number, safe=True):
+    """
+    Returns the number of decimans in `number`.
+
+    Note: if number is float, the results may not be what you expect
+    because some numbers are not exactly representable in binary floating
+    point. For example: 0.1 is 0.100000000000000005551115123... and thus
+    num_decimal_places(0.1) would return a large value (about 55"). However,
+    if the argument is a string, num_decimal_places("0.1") is exact since
+    conversion to float is never happening (it returns 1).
+
+    We recommend that the argument is a string and not a float for exact
+    results (see the comment above). If safe is True and the argument is
+    a float a ValueError is raised.
+
+    Example: num_decimal_places("0.12") => 2
+    Example: num_decimal_places("1.423") => 3
+    Example: num_decimal_places("1") => 0
+    Example: num_decimal_places(10) => 0
+    """
+    if safe and isinstance(number, float):
+        raise ValueError(
+            "Argument is a float and may lead to inexact results due to binary"
+            " floating point representation. Safe conversion is not "
+            "possible."
+        )
+    return abs(decimal.Decimal(str(number)).as_tuple().exponent)
