@@ -99,3 +99,20 @@ def url_to_filename(url):
         return None
     path = unquote_plus(path)  # Deal with percent encoding.
     return os.path.basename(path) or None
+
+
+def is_integer(number):
+    """
+    Returns true if and only if the data represented by `number` is an
+    integer. The argument can be a string, int or a float object.
+
+    Example: is_integer(2) => True
+    Example: is_integer(2.5) => False
+    Example: is_integer("10") => True
+    Example: is_integer(1.00) => True
+    """
+    try:
+        number = float(number)
+        return number.is_integer()
+    except ValueError:
+        return False

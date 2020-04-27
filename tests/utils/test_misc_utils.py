@@ -8,6 +8,7 @@ from data_mine.constants import DATAMINE_CACHE_DIR_ENV_VAR
 from data_mine.utils import datamine_cache_dir
 from data_mine.utils import file_sha256
 from data_mine.utils import get_home_dir
+from data_mine.utils import is_integer
 from data_mine.utils import url_to_filename
 from faker import Faker
 from tempfile import mkstemp
@@ -188,6 +189,30 @@ class TestMiscUtils(unittest.TestCase):
                 "qs file&.txt"
         )
         self.assertIsNone(url_to_filename(""))
+
+    #########################################################################
+    #                              is_integer()                             #
+    #########################################################################
+
+    def test_is_integer(self):
+        integers = [
+                1, 0, -1000000007, "0", "567", "078223", "-14",
+                "1.00", ".0", 10.00, -4.0, "10e2", 10e3, 1.00
+        ]
+        not_integers = [
+                -4.5, "0.41", "-5.32", 10e-5, "3.1415e2", 2.718e1,
+                "this is not a number", "0..23.002"
+        ]
+        for number in integers:
+            self.assertTrue(
+                    is_integer(number),
+                    "{} is expected to be an integer.".format(number)
+            )
+        for number in not_integers:
+            self.assertFalse(
+                    is_integer(number),
+                    "{} is not expected to be an integer.".format(number)
+            )
 
 
 if __name__ == '__main__':
