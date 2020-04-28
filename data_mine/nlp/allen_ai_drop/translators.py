@@ -1,26 +1,22 @@
-import decimal
+import numpy as np
 import pandas as pd
 import pyhash
+import six
 
+from copy import deepcopy
+from data_mine.utils import is_integer, num_decimal_places
 from numpy.random import RandomState
 from six import string_types
-
-
-def is_integer(num):
-    try:
-        int(num)
-        return True
-    except ValueError:
-        return False
-
-
-def num_decimal_places(number):
-    return abs(decimal.Decimal(number).as_tuple().exponent)
+from .utils import serialize_date
 
 
 def hash_as_int32(thing):
     hasher = pyhash.city_32()
-    return hasher(str(thing))
+    if six.PY2:
+        thing = unicode(thing)  # noqa: F821
+    else:
+        thing = str(thing)
+    return hasher(thing)
 
 
 def DROP2MC(df):
@@ -37,8 +33,9 @@ def DROP2MC(df):
         return answer_type in ["number", "date"]
 
     def alter_number(row):
+        assert(row.answer_type == "number")
         number = row.parsed_answer
-        float(number)  # Check the answer is a number.
+        float(number)  # Check that the answer is a number.
 
         # Cases:
         # int and > 20 then generate numbers of the same range.
@@ -52,7 +49,7 @@ def DROP2MC(df):
         assert(0 <= seed <= (2 ** 32) - 1)
         prng = RandomState(seed)
         choices = []
-        if is_integer(number):
+        if is_integer(number) and num_decimal_places(number) == 0:
             number = int(number)
             step_interval = None  # both ends are inclusive.
             if abs(number) <= 20:
@@ -118,7 +115,71 @@ def DROP2MC(df):
         return choices, choices.index(row.parsed_answer)
 
     def alter_date(row):
-        return [row.parsed_answer, "0", "1", "2"], 0
+        assert(row.answer_type == "date")
+
+        # Use this random generator (instead of the global state) to get
+        # determinstic results. We seed the generator depending on the
+        # query_id and the question. Be aware that numpy requires the seed
+        # to be an integer between 0 and 2**32 - 1 inclusive.
+        seed = hash_as_int32(row.query_id + " - " + row.question)
+        assert(0 <= seed <= (2 ** 32) - 1)
+        prng = RandomState(seed)
+
+        original_date = row.original_answer["date"]
+        assert(len(original_date) == 3)
+        year_upper_bound = int(str(original_date['year']) or 2020)
+        year_lower_bound = year_upper_bound
+        choices = [serialize_date(original_date)]
+        while len(choices) < 4:
+            date = deepcopy(original_date)
+            mask = prng.randint(low=1, high=8)  # 8 is exclusive.
+            if len(date['day']) > 0 and (mask & 1) != 0:
+                day = int(date['day'])
+                # Ignore issues with February.
+                possible_days = np.arange(1, 31).tolist()  # without 31.
+                if day in possible_days:
+                    possible_days.remove(day)
+                date['day'] = str(prng.choice(possible_days))
+            if len(date['month']) > 0 and (mask & 2) != 0:
+                month = date['month']
+                possible_months = [
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December",
+                ]
+                if month in possible_months:
+                    possible_months.remove(month)
+                date['month'] = prng.choice(possible_months)
+            if len(date['year']) > 0 and (mask & 4) != 0:
+                year = None
+                if prng.randint(0, 10000) % 2 == 0:
+                    year_upper_bound += prng.randint(1, 3)
+                    year = year_upper_bound
+                else:
+                    year_lower_bound -= prng.randint(1, 3)
+                    year = year_lower_bound
+                date['year'] = str(year)
+
+            # Skip duplicate choices
+            date = serialize_date(date)
+            if date not in choices:
+                choices.append(date)
+
+        assert(len(set(choices)) == 4)  # Unique choices.
+        assert(choices[0] == row.parsed_answer)
+
+        choices.sort(key=lambda choice: hash_as_int32(choice + " ! " + row.query_id))  # noqa: E501
+        assert(choices.count(row.parsed_answer) == 1)
+        return choices, choices.index(row.parsed_answer)
 
     all_data = []
     df = df[df.apply(is_good_question, axis=1)].reset_index(drop=True)
