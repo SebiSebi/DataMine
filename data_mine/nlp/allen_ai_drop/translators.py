@@ -12,9 +12,9 @@ from .utils import serialize_date
 
 def hash_as_int32(thing):
     hasher = pyhash.city_32()
-    if six.PY2:
+    if six.PY2:  # pragma: no cover
         thing = unicode(thing)  # noqa: F821
-    else:
+    else:  # pragma: no cover
         thing = str(thing)
     return hasher(thing)
 

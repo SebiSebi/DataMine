@@ -6,6 +6,8 @@ source = data_mine/
 [report]
 exclude_lines =
     if self.debug:
+    if six.PY2:
+    if six.PY3:
     pragma: no cover
     raise NotImplementedError
     if __name__ == .__main__.:
