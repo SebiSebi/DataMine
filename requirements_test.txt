@@ -3,6 +3,7 @@ Pillow>=6.2.2
 codecov
 coverage
 green>=3.1.0
+jsonlines>=1.2.0
 mock; python_version < '3.3'
 numpy>=1.16.6
 pyfakefs>=3.7.1
