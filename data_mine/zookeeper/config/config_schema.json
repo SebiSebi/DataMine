@@ -9,7 +9,8 @@
                 "type": "string",
                 "enum": [
                     "RACE",
-		    "ALLEN_AI_DROP"
+		    "ALLEN_AI_DROP",
+		    "CSQA"
                 ]
             },
             "config": {

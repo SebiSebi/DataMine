@@ -6,6 +6,7 @@ from six import string_types
 class Collection(Enum):
     RACE = 1
     ALLEN_AI_DROP = 2
+    CSQA = 3  # https://www.tau-nlp.org/commonsenseqa
 
     @staticmethod
     def from_str(label):
