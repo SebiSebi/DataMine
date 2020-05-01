@@ -8,9 +8,10 @@
             "dataset": {
                 "type": "string",
                 "enum": [
-                    "RACE",
 		    "ALLEN_AI_DROP",
-		    "CSQA"
+		    "ALLEN_AI_OBQA",
+		    "CSQA",
+		    "RACE"
                 ]
             },
             "config": {

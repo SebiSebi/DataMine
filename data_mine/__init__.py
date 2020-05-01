@@ -21,3 +21,8 @@ def ALLEN_AI_DROP(*args, **kwargs):
 def CSQA(*args, **kwargs):
     from data_mine.nlp.CSQA import CSQADataset
     return CSQADataset(*args, **kwargs)
+
+
+def ALLEN_AI_OBQA(*args, **kwargs):
+    from data_mine.nlp.allen_ai_obqa import OBQADataset
+    return OBQADataset(*args, **kwargs)

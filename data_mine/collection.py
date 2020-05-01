@@ -7,6 +7,7 @@ class Collection(Enum):
     RACE = 1
     ALLEN_AI_DROP = 2
     CSQA = 3  # https://www.tau-nlp.org/commonsenseqa
+    ALLEN_AI_OBQA = 4  # https://github.com/allenai/OpenBookQA
 
     @staticmethod
     def from_str(label):
