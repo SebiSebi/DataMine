@@ -14,6 +14,7 @@ def CSQADataset(csqa_type):
     """
     assert(isinstance(csqa_type, CSQAType))
     download_dataset(Collection.CSQA, check_shallow_integrity)
+    all_ids = set()
     all_data = []
     with open(type_to_data_file(csqa_type), "rt") as f:
         for line in f:
@@ -42,6 +43,8 @@ def CSQADataset(csqa_type):
             assert(len(answers) == 5)
             for answer in answers:
                 assert(isinstance(answer, string_types))
+            assert(question_id not in all_ids)
+            all_ids.add(question_id)
             all_data.append({
                 "id": question_id,
                 "question": question,
@@ -49,5 +52,6 @@ def CSQADataset(csqa_type):
                 "correct": correct_answer,
                 "question_concept": question_concept
             })
+    assert(len(all_ids) == len(all_data))
     df = pd.DataFrame(all_data)
     return df
