@@ -95,6 +95,32 @@ GOOD_QUESTION3 = json.loads("""{
     "answerKey": "A"
 }""")
 
+INVALID_CORECT_ANSWER = json.loads("""{
+    "id": "123456",
+    "question": {
+        "stem": "What do cows eat?",
+        "choices": [
+            {
+                "text": "Poultry",
+                "label": "D"
+            },
+            {
+                "text": "Steak",
+                "label": "C"
+            },
+            {
+                "text": "Chocolate",
+                "label": "B"
+            },
+            {
+                "text": "Chickpeas",
+                "label": "A"
+            }
+        ]
+    },
+    "answerKey": "E"
+}""")
+
 
 class TestOBQADatasetLoader(TestCase):
 
@@ -162,6 +188,24 @@ class TestOBQADatasetLoader(TestCase):
             }
         ]"""))
         pd.testing.assert_frame_equal(df, expected_df)
+        mock_download_dataset.assert_called_once_with(Collection.ALLEN_AI_OBQA, ANY)  # noqa: E501
+
+    @patch('data_mine.nlp.allen_ai_obqa.loader.download_dataset')
+    def test_invalid_correct_answer(self, mock_download_dataset):
+        self.write_questions(OBQAType.TEST, [
+            INVALID_CORECT_ANSWER
+        ])
+        with self.assertRaises(AssertionError):
+            dm.ALLEN_AI_OBQA(OBQAType.TEST)
+        mock_download_dataset.assert_called_once_with(Collection.ALLEN_AI_OBQA, ANY)  # noqa: E501
+
+    @patch('data_mine.nlp.allen_ai_obqa.loader.download_dataset')
+    def test_duplicate_ids(self, mock_download_dataset):
+        self.write_questions(OBQAType.DEV, [
+            GOOD_QUESTION1, GOOD_QUESTION1
+        ])
+        with self.assertRaises(AssertionError):
+            dm.ALLEN_AI_OBQA(OBQAType.DEV)
         mock_download_dataset.assert_called_once_with(Collection.ALLEN_AI_OBQA, ANY)  # noqa: E501
 
 
