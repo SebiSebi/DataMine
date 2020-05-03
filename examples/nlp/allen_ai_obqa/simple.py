@@ -18,8 +18,9 @@ def main():
     print("\n\n")
 
     facts = list(OBQAFacts())
-    random.shuffle(facts)
+    assert(len(facts) == 1326)  # There are 1326 core facts in total.
     print("Some random facts from OpenBookQA:")
+    random.shuffle(facts)
     for fact in facts[:10]:
         print("    * {}".format(fact))
 
