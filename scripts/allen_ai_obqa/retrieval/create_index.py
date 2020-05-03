@@ -33,7 +33,7 @@ def main():
     for idx, fact in enumerate(OBQAFacts()):
         index.add_item(idx, embeddings[fact])
         sentence_ids[idx] = fact
-    index.build(100)  # N trees TODO(sebisebi): test
+    index.build(1024)  # N trees TODO(sebisebi): test
     index.save('index.ann')
     pickle.dump(sentence_ids, open("sentence_ids.pkl", "wb"))
     print("Index saved to index.ann")

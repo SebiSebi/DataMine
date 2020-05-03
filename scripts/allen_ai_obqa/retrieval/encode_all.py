@@ -1,12 +1,16 @@
+import data_mine as dm
+import pandas as pd
 import pickle
 
-from data_mine.nlp.allen_ai_obqa import OBQAFacts
+from data_mine.nlp.allen_ai_obqa import OBQAFacts, OBQAType
 from sentence_transformers import SentenceTransformer
 
 
 def get_all_sentences():
     sentences = list(OBQAFacts())
-    return sentences
+    df = pd.concat(map(dm.ALLEN_AI_OBQA, list(OBQAType)))
+    sentences += df["question"].tolist()
+    return list(set(sentences))
 
 
 def main():
