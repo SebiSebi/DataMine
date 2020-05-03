@@ -7,7 +7,7 @@ import sys
 import unittest
 
 from data_mine import Collection
-from data_mine.nlp.allen_ai_obqa import OBQAType
+from data_mine.nlp.allen_ai_obqa import OBQAFacts, OBQAType
 from data_mine.nlp.allen_ai_obqa.utils import type_to_data_file
 from data_mine.utils import datamine_cache_dir
 from pyfakefs.fake_filesystem_unittest import TestCase
@@ -206,6 +206,44 @@ class TestOBQADatasetLoader(TestCase):
         ])
         with self.assertRaises(AssertionError):
             dm.ALLEN_AI_OBQA(OBQAType.DEV)
+        mock_download_dataset.assert_called_once_with(Collection.ALLEN_AI_OBQA, ANY)  # noqa: E501
+
+
+class TestOBQAFactsLoader(TestCase):
+
+    def setUp(self):
+        self.setUpPyfakefs()
+        self.dataset_dir = os.path.join(
+                datamine_cache_dir(),
+                "ALLEN_AI_OBQA", "OpenBookQA-V1-Sep2018",
+                "Data", "Main"
+        )
+        os.makedirs(self.dataset_dir, mode=0o755)
+
+    def write_facts(self, facts):
+        with open(os.path.join(self.dataset_dir, "openbook.txt"), "wt") as g:
+            for fact in facts:
+                g.write(fact)
+                g.write("\n")
+
+    @patch('data_mine.nlp.allen_ai_obqa.loader.download_dataset')
+    def test_load_obqa_facts(self, mock_download_dataset):
+        self.write_facts([
+            "This is a fact",
+            " It starts and ends with whitespaces        ",
+            "\"An example of an adaptation is camel humps\"",
+            "  \n ",
+            "Last fact."
+        ])
+        facts = list(OBQAFacts())
+        self.assertListEqual(
+                facts, [
+                    "This is a fact",
+                    "It starts and ends with whitespaces",
+                    "An example of an adaptation is camel humps",
+                    "Last fact."
+                ]
+        )
         mock_download_dataset.assert_called_once_with(Collection.ALLEN_AI_OBQA, ANY)  # noqa: E501
 
 

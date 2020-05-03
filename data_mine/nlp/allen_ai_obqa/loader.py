@@ -79,4 +79,6 @@ def OBQAFacts():
     )
     with open(facts_file, "rt") as f:
         for line in f:
-            yield line.strip(string.whitespace + "\"")
+            fact = line.strip(string.whitespace + "\"")
+            if len(fact) > 0:
+                yield fact
