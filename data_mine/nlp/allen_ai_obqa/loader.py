@@ -1,9 +1,12 @@
 import json
+import os
 import pandas as pd
+import string
 
 from data_mine import Collection
 from data_mine.zookeeper import check_shallow_integrity, download_dataset
 from six import string_types
+from .constants import OBQA_CACHE_DIR
 from .types import OBQAType
 from .utils import type_to_data_file
 
@@ -57,3 +60,23 @@ def OBQADataset(obqa_type):
     assert(len(all_data) == len(all_ids))
     df = pd.DataFrame(all_data)
     return df
+
+
+def OBQAFacts():
+    """
+    Yields the 1326 core science facts from the OpenBook QA dataset.
+
+    Examples:
+        * wind causes erosion
+        * wind is a renewable resource
+
+    Returns a generator of facts (strings).
+    """
+    download_dataset(Collection.ALLEN_AI_OBQA, check_shallow_integrity)
+    facts_file = os.path.join(
+            OBQA_CACHE_DIR, "OpenBookQA-V1-Sep2018",
+            "Data", "Main", "openbook.txt"
+    )
+    with open(facts_file, "rt") as f:
+        for line in f:
+            yield line.strip(string.whitespace + "\"")
