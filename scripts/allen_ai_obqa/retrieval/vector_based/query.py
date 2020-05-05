@@ -2,6 +2,7 @@ import data_mine as dm
 import os
 import pandas as pd
 import pickle
+import tqdm
 
 from annoy import AnnoyIndex
 from data_mine.nlp.allen_ai_obqa import OBQAType
@@ -60,6 +61,26 @@ def by_random_question():
         print("{}) {} ({})".format(i, sentence, dist))
 
 
+def annotate_all_questions():
+    embeddings = load_embeddings()
+    sentence_ids = load_sentence_ids()
+    index = AnnoyIndex(get_embeddings_dim(embeddings), "angular")
+    index.load("index.ann")
+    print("Found {} items in the index.".format(index.get_n_items()))
+    print("The index uses {} trees.".format(index.get_n_trees()))
+    print("")
+
+    df = pd.concat(map(dm.ALLEN_AI_OBQA, list(OBQAType)))
+    annotations = {}
+    for _, row in tqdm.tqdm(df.iterrows(), total=len(df)):
+        sent = row.question + " " + ", ".join(row.answers)
+        closest = index.get_nns_by_vector(embeddings[sent], 20)
+        closest = list(map(lambda sid: sentence_ids[sid], closest))
+        annotations[sent] = closest
+    pickle.dump(annotations, open("annotations.pkl", "wb"))
+    print("Annotations written to annotations.pkl")
+
+
 def main():
     required_files = [
             "embeddings.pkl",
@@ -72,8 +93,9 @@ def main():
 
     # by_sentence("Pasta may be cooked in water when")
     # by_sentence("what is the closest source of plasma to our planet?")
-    by_sentence("If an organism is existing then it is made up of")
-    by_random_question()
+    # by_sentence("If an organism is existing then it is made up of")
+    # by_random_question()
+    annotate_all_questions()
 
 
 if __name__ == "__main__":

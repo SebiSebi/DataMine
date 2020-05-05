@@ -1,3 +1,4 @@
 annoy>=1.16.3
 data-mine
 sentence-transformers>=0.2.6.1
+tqdm>=4.46.0

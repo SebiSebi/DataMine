@@ -9,7 +9,11 @@ from sentence_transformers import SentenceTransformer
 def get_all_sentences():
     sentences = list(OBQAFacts())
     df = pd.concat(map(dm.ALLEN_AI_OBQA, list(OBQAType)))
-    sentences += df["question"].tolist()
+    for _, row in df.iterrows():
+        sentences.append(row.question)
+        for answer in row.answers:
+            sentences.append(row.question + " " + answer)
+        sentences.append(row.question + " " + ", ".join(row.answers))
     return list(set(sentences))
 
 
