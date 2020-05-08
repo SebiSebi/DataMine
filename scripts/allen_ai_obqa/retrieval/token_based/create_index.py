@@ -1,4 +1,3 @@
-import data_mine as dm
 import lucene
 import tqdm
 
@@ -25,7 +24,7 @@ def index_facts(facts, writer):
 def main():
     facts = get_all_facts()
     print("Preparing to index {} facts".format(len(facts)))
-    
+
     store_dir = "lucene_index"
     store = SimpleFSDirectory(Paths.get(store_dir))
     analyzer = EnglishAnalyzer()
