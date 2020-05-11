@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 __author__ = """Pirtoaca George-Sebastian (sebisebi)"""
 __email__ = 'gpirtoaca@gmail.com'
-__version__ = '0.0.7'
+__version__ = '0.0.8'
 
 
 from .collection import Collection

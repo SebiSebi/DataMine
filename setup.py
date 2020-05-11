@@ -14,7 +14,7 @@ REQUIREMENTS = [
 
 setup(
     name='data_mine',
-    version='0.0.7',
+    version='0.0.8',
     description='DataMine is a collection of datasets ready to be used for machine learning applications and not only.',  # noqa: E501
     long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
