@@ -50,6 +50,10 @@
                 {
                     "URL": "https://s3-us-west-2.amazonaws.com/ai2-website/data/OpenBookQA-V1-Sep2018.zip",
                     "SHA256": "82368cf05df2e3b309c17d162e10b888b4d768fad6e171e0a041954c8553be46"
+                },
+		{
+                    "URL": "https://github.com/SebiSebi/DataMine/raw/master/data/nlp/allen_ai_obqa/extracted_facts.json.gz",
+                    "SHA256": "25072840676ded3bb5b7ce3224fd180b1b9dc445e9fc28fdbc823b6b82066420"
                 }
             ],
 	    "expectedFiles": "nlp/allen_ai_obqa/expected_files.txt.gz"
