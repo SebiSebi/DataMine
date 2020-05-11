@@ -121,6 +121,51 @@ INVALID_CORECT_ANSWER = json.loads("""{
     "answerKey": "E"
 }""")
 
+# Covers GOOD_QUESTION1 and GOOD_QUESTION2.
+RETRIEVED_FACTS = json.loads("""{
+        "The sun is responsible for puppies learning new tricks": {
+            "context": "Context 1",
+            "token_based": ["tb11", "tb12"],
+            "vector_based": ["vb1"]
+        },
+        "The sun is responsible for children growing up and getting old": {
+            "context": "Context 2",
+            "token_based": ["tb21", "tb22"],
+            "vector_based": ["vb2"]
+        },
+        "The sun is responsible for flowers wilting in a vase": {
+            "context": "Context 3",
+            "token_based": ["tb31", "tb32"],
+            "vector_based": ["vb3"]
+        },
+        "The sun is responsible for plants sprouting, blooming and wilting": {
+            "context": "Context 4",
+            "token_based": ["tb41", "tb42"],
+            "vector_based": ["vb4"]
+        },
+        "Which product cannot convert energy into light? floor lamp": {
+            "context": "Context 5",
+            "token_based": ["tb51", "tb52"],
+            "vector_based": ["vb5"]
+        },
+        "Which product cannot convert energy into light? charger": {
+            "context": "Context 6",
+            "token_based": ["tb61", "tb62"],
+            "vector_based": ["vb6"]
+        },
+        "Which product cannot convert energy into light? Christmas tree lights"
+        :{
+            "context": "Context 7",
+            "token_based": ["tb71", "tb72"],
+            "vector_based": ["vb7"]
+        },
+        "Which product cannot convert energy into light? chandelier": {
+            "context": "Context 8",
+            "token_based": ["tb81", "tb82"],
+            "vector_based": ["vb8"]
+        }
+}""")
+
 
 class TestOBQADatasetLoader(TestCase):
 
@@ -206,6 +251,126 @@ class TestOBQADatasetLoader(TestCase):
         ])
         with self.assertRaises(AssertionError):
             dm.ALLEN_AI_OBQA(OBQAType.DEV)
+        mock_download_dataset.assert_called_once_with(Collection.ALLEN_AI_OBQA, ANY)  # noqa: E501
+
+    @patch('data_mine.nlp.allen_ai_obqa.loader.download_dataset')
+    def test_retrieved_facts(self, mock_download_dataset):
+        facts_file = os.path.join(datamine_cache_dir(), "ALLEN_AI_OBQA", "extracted_facts.json")  # noqa: E501
+        with open(facts_file, "wt") as g:
+            json.dump(RETRIEVED_FACTS, g)
+        self.write_questions(OBQAType.TRAIN, [
+                GOOD_QUESTION1, GOOD_QUESTION2
+        ])
+        df = dm.ALLEN_AI_OBQA(OBQAType.TRAIN, with_retrieved_facts=True)
+        expected_df = pd.DataFrame(json.loads("""[
+            {
+                "id": "7-980",
+                "question": "The sun is responsible for",
+                "answers": [
+                    "puppies learning new tricks",
+                    "children growing up and getting old",
+                    "flowers wilting in a vase",
+                    "plants sprouting, blooming and wilting"
+                ],
+                "correct": "D",
+                "retrieved_facts": [
+                    {
+                        "context": "Context 1",
+                        "token_based": [
+                            "tb11",
+                            "tb12"
+                        ],
+                        "vector_based": [
+                            "vb1"
+                        ]
+                    },
+                    {
+                        "context": "Context 2",
+                        "token_based": [
+                            "tb21",
+                            "tb22"
+                        ],
+                        "vector_based": [
+                            "vb2"
+                        ]
+                    },
+                    {
+                        "context": "Context 3",
+                        "token_based": [
+                            "tb31",
+                            "tb32"
+                        ],
+                        "vector_based": [
+                            "vb3"
+                        ]
+                    },
+                    {
+                        "context": "Context 4",
+                        "token_based": [
+                            "tb41",
+                            "tb42"
+                        ],
+                        "vector_based": [
+                            "vb4"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "1158",
+                "question": "Which product cannot convert energy into light?",
+                "answers": [
+                    "chandelier",
+                    "charger",
+                    "floor lamp",
+                    "Christmas tree lights"
+                ],
+                "correct": "B",
+                "retrieved_facts": [
+                    {
+                        "context": "Context 8",
+                        "token_based": [
+                            "tb81",
+                            "tb82"
+                        ],
+                        "vector_based": [
+                            "vb8"
+                        ]
+                    },
+                    {
+                        "context": "Context 6",
+                        "token_based": [
+                            "tb61",
+                            "tb62"
+                        ],
+                        "vector_based": [
+                            "vb6"
+                        ]
+                    },
+                    {
+                        "context": "Context 5",
+                        "token_based": [
+                            "tb51",
+                            "tb52"
+                        ],
+                        "vector_based": [
+                            "vb5"
+                        ]
+                    },
+                    {
+                        "context": "Context 7",
+                        "token_based": [
+                            "tb71",
+                            "tb72"
+                        ],
+                        "vector_based": [
+                            "vb7"
+                        ]
+                    }
+                ]
+            }
+            ]"""))
+        pd.testing.assert_frame_equal(df, expected_df)
         mock_download_dataset.assert_called_once_with(Collection.ALLEN_AI_OBQA, ANY)  # noqa: E501
 
 
