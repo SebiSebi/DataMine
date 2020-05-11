@@ -2,3 +2,4 @@ include README.md
 include LICENSE
 include README_PyPI.md
 global-include *.json *.txt.gz
+prune data/
