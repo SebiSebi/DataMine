@@ -23,6 +23,11 @@ def main():
     random.shuffle(facts)
     for fact in facts[:10]:
         print("    * {}".format(fact))
+    print("\n\n")
+
+    print("Train examples with retrieved facts:")
+    print(dm.ALLEN_AI_OBQA(OBQAType.TRAIN, True))
+    print("\n\n")
 
 
 if __name__ == "__main__":

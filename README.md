@@ -14,10 +14,14 @@
 Available datasets
 ------------------
 
-| Dataset             | Keywords                   | Usage & Detailed Info                   | Example(s)                      |
-| ------------------- | -------------------------- | --------------------------------------- | ------------------------------- |
-| `RACE`              | NLP, QA, Multiple Choice   | [Additional information][RACE-Home]     | [RACE Example][RACE-Example-1]  |
+| Dataset               | Keywords                   | Usage & Detailed Info                   | Example(s)                      |
+| --------------------- | -------------------------- | --------------------------------------- | ------------------------------- |
+| `RACE`                | NLP, QA, Multiple Choice   | [Additional information][RACE-Home]     | [RACE Example][RACE-Example-1]  |
+| `AllenAI OpenBookQA`  | NLP, QA, Multiple Choice   | [Additional information][OBQA-Home]     | [OBQA Example][OBQA-Example-1]  |
+
 
 
 [RACE-Home]: https://github.com/SebiSebi/DataMine/tree/master/data_mine/nlp/RACE
 [RACE-Example-1]: https://github.com/SebiSebi/DataMine/blob/master/examples/nlp/RACE/simple.py
+[OBQA-Home]: https://github.com/SebiSebi/DataMine/tree/master/data_mine/nlp/allen_ai_obqa
+[OBQA-Example-1]: https://github.com/SebiSebi/DataMine/blob/master/examples/nlp/allen_ai_obqa/simple.py
