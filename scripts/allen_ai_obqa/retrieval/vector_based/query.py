@@ -73,10 +73,11 @@ def annotate_all_questions():
     df = pd.concat(map(dm.ALLEN_AI_OBQA, list(OBQAType)))
     annotations = {}
     for _, row in tqdm.tqdm(df.iterrows(), total=len(df)):
-        sent = row.question + " " + ", ".join(row.answers)
-        closest = index.get_nns_by_vector(embeddings[sent], 20)
-        closest = list(map(lambda sid: sentence_ids[sid], closest))
-        annotations[sent] = closest
+        for answer in row.answers:
+            sent = row.question + " " + answer
+            closest = index.get_nns_by_vector(embeddings[sent], 75)
+            closest = list(map(lambda sid: sentence_ids[sid], closest))
+            annotations[sent] = closest
     pickle.dump(annotations, open("annotations.pkl", "wb"))
     print("Annotations written to annotations.pkl")
 

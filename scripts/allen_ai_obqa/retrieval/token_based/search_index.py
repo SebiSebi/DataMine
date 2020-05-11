@@ -2,6 +2,8 @@ import data_mine as dm
 import lucene
 import os
 import pandas as pd
+import pickle
+import tqdm
 
 from data_mine.nlp.allen_ai_obqa import OBQAType
 from java.nio.file import Paths
@@ -28,6 +30,21 @@ def search(query_string, analyzer, searcher):
         print("{}) {} (score: {})".format(i + 1, fact, score))
 
 
+def annotate_all_questions(analyzer, searcher):
+    df = pd.concat(map(dm.ALLEN_AI_OBQA, list(OBQAType)))
+    annotations = {}
+    for _, row in tqdm.tqdm(df.iterrows(), total=len(df)):
+        for answer in row.answers:
+            sent = row.question + " " + answer
+            query_string = QueryParser.escape(sent)
+            query = QueryParser("contents", analyzer).parse(query_string)
+            hits = searcher.search(query, 75).scoreDocs
+            closest = [searcher.doc(score_doc.doc).get("contents") for score_doc in hits]
+            annotations[sent] = closest
+    pickle.dump(annotations, open("annotations.pkl", "wb"))
+    print("Annotations written to annotations.pkl")
+
+
 def main():
     store_dir = "lucene_index"
     if not os.path.isdir(store_dir):
@@ -38,7 +55,8 @@ def main():
 
     # query_string = "House is a simple fact about science reaction"
     query_string = get_random_question()
-    search(query_string, analyzer, searcher)
+    # search(query_string, analyzer, searcher)
+    annotate_all_questions(analyzer, searcher)
     del searcher
 
 
