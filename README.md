@@ -11,6 +11,43 @@
 
 [![Python Versions](https://img.shields.io/badge/python-2.7%20%7C%203.5%20%7C%203.6%20%7C%203.7%20%7C%203.8-blue)](https://pypi.org/project/data-mine/)
 
+
+Installation
+------------
+
+```bash
+pip install data_mine
+```
+
+
+Example usage
+-------------
+
+```python
+import data_mine as dm
+
+from data_mine.nlp.RACE import RACEType
+
+
+def main():
+    # Load the dataset into a Pandas DataFrame.
+    df = dm.RACE(RACEType.DEV_MIDDLE)
+    print(df)  # Results in:
+    """
+                                                    article                                           question                                            answers correct                id
+    0     Jess really felt very happy. When he arrived a...    What would happen if Cindy told Jess the truth?  [Jess would go on the camping trip himself., J...       C  1-middle2414.txt
+    1     Jess really felt very happy. When he arrived a...       If Jess really bought a sleeping bag,   _  .  [everyone else would also buy one, He would ha...       B  2-middle2414.txt
+    2     Jess really felt very happy. When he arrived a...                      From the story we know   _  .  [everybody would go camping in the class, Jess...       B  3-middle2414.txt
+    3     Jess really felt very happy. When he arrived a...          Which is the best title for this passage?  [Jess and His School, Jess and His Friends, An...       C  4-middle2414.txt
+    4     Have you felt annoyed when a cell phone  rings...   . Elizabeth Lorris Ritter is worried that   _  .  [students are not allowed to bring cellphones,...       A   1-middle758.txt
+    ...                                                 ...                                                ...                                                ...     ...               ...
+    """
+
+if __name__ == "__main__":
+    main()
+```
+
+
 Available datasets
 ------------------
 
