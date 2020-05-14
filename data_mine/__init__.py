@@ -26,3 +26,8 @@ def CSQA(*args, **kwargs):
 def ALLEN_AI_OBQA(*args, **kwargs):
     from data_mine.nlp.allen_ai_obqa import OBQADataset
     return OBQADataset(*args, **kwargs)
+
+
+def HOTPOT_QA(*args, **kwargs):
+    from data_mine.nlp.hotpot_qa import HotpotQADataset
+    return HotpotQADataset(*args, **kwargs)

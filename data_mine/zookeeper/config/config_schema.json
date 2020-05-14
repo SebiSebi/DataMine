@@ -11,6 +11,7 @@
 		    "ALLEN_AI_DROP",
 		    "ALLEN_AI_OBQA",
 		    "CSQA",
+		    "HOTPOT_QA",
 		    "RACE"
                 ]
             },

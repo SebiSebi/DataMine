@@ -8,6 +8,7 @@ class Collection(Enum):
     ALLEN_AI_DROP = 2
     CSQA = 3  # https://www.tau-nlp.org/commonsenseqa
     ALLEN_AI_OBQA = 4  # https://github.com/allenai/OpenBookQA
+    HOTPOT_QA = 5  # https://hotpotqa.github.io/
 
     @staticmethod
     def from_str(label):

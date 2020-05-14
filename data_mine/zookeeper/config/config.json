@@ -58,5 +58,29 @@
             ],
 	    "expectedFiles": "nlp/allen_ai_obqa/expected_files.txt.gz"
         }
+    },
+    {
+        "dataset": "HOTPOT_QA",
+        "config": {
+            "requirements": [
+                {
+                    "URL": "http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_train_v1.1.json",
+                    "SHA256": "26650cf50234ef5fb2e664ed70bbecdfd87815e6bffc257e068efea5cf7cd316"
+                },
+		{
+                    "URL": "http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_distractor_v1.json",
+                    "SHA256": "4e9ecb5c8d3b719f624d66b60f8d56bf227f03914f5f0753d6fa1b359d7104ea"
+                },
+		{
+                    "URL": "http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_fullwiki_v1.json",
+                    "SHA256": "2f1f3e594a3066a3084cc57950ca2713c24712adaad03af6ccce18d1846d5618"
+                },
+		{
+                    "URL": "http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_test_fullwiki_v1.json",
+                    "SHA256": "c61a5274b9aa6deca3f7d2dc4d7757684c158fbd2264f759307699fb53801c2b"
+                }
+            ],
+	    "expectedFiles": "nlp/hotpot_qa/expected_files.txt.gz"
+        }
     }
 ]
