@@ -4,6 +4,7 @@ import pandas as pd
 
 from data_mine import Collection
 from data_mine.zookeeper import check_shallow_integrity, download_dataset
+from six import string_types
 from .types import HotpotQAType
 from .utils import type_to_data_file
 
@@ -40,12 +41,12 @@ def HotpotQADataset(hotpot_qa_type):
         question_level = entry.get("level", None)
 
         # Validate fields.
-        assert(isinstance(question_id, str))
-        assert(isinstance(question, str))
+        assert(isinstance(question_id, string_types))
+        assert(isinstance(question, string_types))
         assert(isinstance(supporting_facts, list))
         assert(isinstance(context, list))
         if hotpot_qa_type != HotpotQAType.TEST_FULLWIKI:
-            assert(isinstance(answer, str))
+            assert(isinstance(answer, string_types))
             assert(len(supporting_facts) > 0)
             assert(question_type in ["comparison", "bridge"])
             assert(question_level in ["easy", "medium", "hard"])
@@ -66,7 +67,7 @@ def HotpotQADataset(hotpot_qa_type):
             titles = filter(lambda title: title in title2contents, titles)
         paragraphs = [' '.join(title2contents[title]) for title in titles]
         for paragraph in paragraphs:
-            assert(isinstance(paragraph, str))
+            assert(isinstance(paragraph, string_types))
         assert(len(paragraphs) <= 2)
 
         assert(question_id not in all_ids)
