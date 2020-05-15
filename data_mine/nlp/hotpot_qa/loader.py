@@ -65,10 +65,17 @@ def HotpotQADataset(hotpot_qa_type):
         assert(len(title2contents) == len(context))
         if hotpot_qa_type == HotpotQAType.DEV_FULLWIKI:
             titles = filter(lambda title: title in title2contents, titles)
-        paragraphs = [' '.join(title2contents[title]) for title in titles]
-        for paragraph in paragraphs:
+        gold_paragraphs = [' '.join(title2contents[title]) for title in titles]
+        for paragraph in gold_paragraphs:
             assert(isinstance(paragraph, string_types))
-        assert(len(paragraphs) <= 2)
+        if hotpot_qa_type == HotpotQAType.TRAIN:
+            assert(len(gold_paragraphs) == 2)
+        elif hotpot_qa_type == HotpotQAType.DEV_DISTRACTOR:
+            assert(len(gold_paragraphs) == 2)
+        elif hotpot_qa_type == HotpotQAType.DEV_FULLWIKI:
+            assert(len(gold_paragraphs) <= 2)
+        elif hotpot_qa_type == HotpotQAType.TEST_FULLWIKI:
+            assert(len(gold_paragraphs) == 0)
 
         assert(question_id not in all_ids)
         all_ids.add(question_id)
@@ -76,7 +83,7 @@ def HotpotQADataset(hotpot_qa_type):
             "id": question_id,
             "question": question,
             "answer": answer,
-            "paragraphs": paragraphs,
+            "gold_paragraphs": gold_paragraphs,
             "supporting_facts": supporting_facts,
             "context": context,
             "question_type": question_type,
