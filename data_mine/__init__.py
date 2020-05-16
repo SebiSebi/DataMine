@@ -31,3 +31,8 @@ def ALLEN_AI_OBQA(*args, **kwargs):
 def HOTPOT_QA(*args, **kwargs):
     from data_mine.nlp.hotpot_qa import HotpotQADataset
     return HotpotQADataset(*args, **kwargs)
+
+
+def COSMOS_QA(*args, **kwargs):
+    from data_mine.nlp.cosmos_qa import CosmosQADataset
+    return CosmosQADataset(*args, **kwargs)

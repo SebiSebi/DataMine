@@ -9,6 +9,7 @@ class Collection(Enum):
     CSQA = 3  # https://www.tau-nlp.org/commonsenseqa
     ALLEN_AI_OBQA = 4  # https://github.com/allenai/OpenBookQA
     HOTPOT_QA = 5  # https://hotpotqa.github.io/
+    COSMOS_QA = 6  # https://wilburone.github.io/cosmos/
 
     @staticmethod
     def from_str(label):

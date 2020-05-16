@@ -82,5 +82,17 @@
             ],
 	    "expectedFiles": "nlp/hotpot_qa/expected_files.txt.gz"
         }
+    },
+    {
+        "dataset": "COSMOS_QA",
+        "config": {
+            "requirements": [
+                {
+                    "URL": "https://storage.googleapis.com/ai2-mosaic/public/cosmosqa/cosmosqa-data.zip",
+                    "SHA256": "d06bfef918240b34b6f86fdfd8215d15fea2abced0bfca8ab99004e3bce760ec"
+                }
+            ],
+	    "expectedFiles": "nlp/cosmos_qa/expected_files.txt.gz"
+        }
     }
 ]

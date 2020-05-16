@@ -10,6 +10,7 @@
                 "enum": [
 		    "ALLEN_AI_DROP",
 		    "ALLEN_AI_OBQA",
+		    "COSMOS_QA",
 		    "CSQA",
 		    "HOTPOT_QA",
 		    "RACE"
