@@ -1,12 +1,73 @@
+import json
+import pandas as pd
+
 from data_mine import Collection
 from data_mine.zookeeper import check_shallow_integrity, download_dataset
 from .types import CosmosQAType
+from .utils import type_to_data_file
 
 
 def CosmosQADataset(cosmos_qa_type):
     """
-    TODO(sebisebi): add description
+    Loads a Cosmos QA dataset given the split (see the CosmosQAType enum).
+    Any error during reading will generate an exception.
+
+    Returns a Pandas DataFrame with 5 columns:
+    * 'id': string
+    * 'question': string
+    * 'context': string
+    * 'answers': list[string], length = 4
+    * 'correct': oneof('A', 'B', 'C', D') or None for the test split
     """
     assert(isinstance(cosmos_qa_type, CosmosQAType))
     download_dataset(Collection.COSMOS_QA, check_shallow_integrity)
-    raise NotImplementedError("COSMOS QA not implemented yet.")
+
+    def extract_answers(entry):
+        for i in range(0, 4):
+            key = "answer{}".format(i)
+            answer = entry[key]
+            assert(isinstance(answer, str))
+            yield answer
+            del entry[key]
+
+    all_ids = set()
+    all_data = []
+    with open(type_to_data_file(cosmos_qa_type), "rt") as f:
+        for line in f:
+            entry = json.loads(line)
+            assert(isinstance(entry, dict))
+            if cosmos_qa_type != CosmosQAType.TEST:
+                assert(len(entry) == 8)
+            else:
+                assert(len(entry) == 7)
+
+            # Extract data.
+            question_id = entry["id"]
+            question = entry["question"]
+            context = entry["context"]
+            answers = list(extract_answers(entry))
+            label = entry.get("label", None)
+            if label is not None:
+                label = chr(ord('A') + int(label))
+
+            # Validate date.
+            assert(isinstance(question_id, str))
+            assert(isinstance(question, str))
+            assert(isinstance(context, str))
+            assert(isinstance(answers, list) and len(answers) == 4)
+            if cosmos_qa_type == CosmosQAType.TEST:
+                assert(label is None)
+            else:
+                assert(label in ["A", "B", "C", "D"])
+
+            assert(question_id not in all_ids)
+            all_ids.add(question_id)
+            all_data.append({
+                "id": question_id,
+                "question": question,
+                "context": context,
+                "answers": answers,
+                "correct": label,
+            })
+    df = pd.DataFrame(all_data)
+    return df
