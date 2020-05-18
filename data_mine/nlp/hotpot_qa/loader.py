@@ -11,12 +11,21 @@ from .utils import type_to_data_file
 
 def HotpotQADataset(hotpot_qa_type):
     """
-    TODO(sebisebi): add description
+    Loads a HotpotQA dataset given the split (see the HotpotQAType esplit.
+    Any error during reading will generate an exception.
 
-    TOTO(sebisebi): in the dev full wiki some joins cannot be made.
-    Titles are missing from the context. This does not happen in the
-    test fullwiki because the set of supporting_facts is empty. Why
-    is this happening in dev? Can we do anything?
+    Returns a Pandas DataFrame with 8 columns:
+    * 'id': string;
+    * 'question': string;
+    * 'answer': string (this is `None` for the test split);
+    * 'gold_paragraphs': list[string];
+    * 'supporting_facts': list;
+    * 'context': list;
+    * 'question_type': string, oneof('comparison', 'bridge', 'None');
+    * 'question_level': string, oneof('easy', 'medium', 'hard', 'None').
+
+    Please read the dataset's additional information page for a detailed
+    explanation on the semantics of the fields above.
     """
     assert(isinstance(hotpot_qa_type, HotpotQAType))
     download_dataset(Collection.HOTPOT_QA, check_shallow_integrity)

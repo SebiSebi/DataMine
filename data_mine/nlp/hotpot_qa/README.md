@@ -26,6 +26,76 @@ systems’ ability to extract relevant facts and perform necessary comparison.
 * [Leaderboard](https://hotpotqa.github.io/)
 
 
+How to use
+----------
+
+```python
+import data_mine as dm
+
+from data_mine.nlp.hotpot_qa import HotpotQAType
+
+
+def main():
+    df = dm.HOTPOT_QA(HotpotQAType.DEV_DISTRACTOR)
+    print(df)  # Shows something similar to the example below.
+
+
+if __name__ == "__main__":
+    main()
+```
+
+The following HotpotQA types are available:
+1. `TRAIN`
+2. `DEV_DISTRACTOR`
+3. `DEV_FULLWIKI`
+7. `TEST_FULLWIKI`
+
+
+Scheme (HotpotQA DataFrame)
+-----------------------
+
+The loading function (`data_mine.nlp.hotpot_qa.HotpotQADataset` or `dm.HOTPOT_QA`)
+returns a `Pandas DataFrame` with 8 columns:
+* `id`: string, a unique id for the question;
+* `question`: string;
+* `answer`: string (this is `None` for the test split);
+* `gold_paragraphs`: list[string], please read the notes on the gold paragraphs, below. For
+the test split, the list is always empty;
+* `supporting_facts`: list, where each entry is a list with two elements [`title`, `sent_id`].
+The `title` component denotes the title of the paragraph, and `sent_id` denotes the
+supporting fact's id (0-based) in this paragraph. For the test split, the list is always empty;
+* `context`: list, each entry is a paragraph, which is represented as a list with two
+elements [`title`, `sentences`], `sentences` being a list of strings;
+* `question_type`: string, oneof(`comparison`, `bridge`) - see the paper for more details. This
+is `None` for the test split;
+* `question_level`: string, oneof(`easy`, `medium`, `hard`) - see the paper for more details. This
+is `None` for the test split.
+
+**Note**: The columns `supporting_facts` and `context` are passed through unaltered from the data
+read in the `HotpotQA` files. The gold paragraphs are deduced from those columns but we include
+all of them for completeness.
+
+**Note**: You can find important information on the dataset's [webpage](https://github.com/hotpotqa/hotpot).
+
+Example:
+```
+                            id                                           question                            answer  ...                                            context question_type question_level
+0     5a8b57f25542995d1e6f1371  Were Scott Derrickson and Ed Wood of the same ...                               yes  ...  [[Adam Collis, [Adam Collis is an American fil...    comparison           hard
+1     5a8c7595554299585d9e36b6  What government position was held by the woman...                 Chief of Protocol  ...  [[A Kiss for Corliss, [A Kiss for Corliss is a...        bridge           hard
+2     5a85ea095542994775f606a8  What science fantasy young adult series, told ...                         Animorphs  ...  [[Animorphs, [Animorphs is a science fantasy s...        bridge           hard
+3     5adbf0a255429947ff17385a  Are the Laleli Mosque and Esma Sultan Mansion ...                                no  ...  [[Esma Sultan, [Esma Sultan is the name of thr...    comparison           hard
+4     5a8e3ea95542995a26add48d  The director of the romantic comedy "Big Stone...  Greenwich Village, New York City  ...  [[Great Eastern Conventions, [Great Eastern Co...        bridge           hard
+...                        ...                                                ...                               ...  ...                                                ...           ...            ...
+7400  5ab92307554299753720f72d  What Pakistani actor and writer from Islamabad...                     Yasir Hussain  ...  [[Baat Cheet, [Baat Cheet (Urdu: ‎ or French: ...        bridge           hard
+7401  5abba3b1554299642a094aed  Are both Volvic and Canfield's Diet Chocolate ...                                no  ...  [[Fudge cookie, [A fudge cookie is a cookie th...    comparison           hard
+7402  5a8173fa554299260e20a28e  Are Billy and Barak both breeds of scenthound?...                               yes  ...  [[The Livestock Conservancy, [The Livestock Co...    comparison           hard
+7403  5a8caf1d554299585d9e3720  Were both of the following rock groups formed ...                               yes  ...  [[The Strapping Fieldhands, [The Strapping Fie...    comparison           hard
+7404  5ac132a755429964131be17c  Blackfin is a family of processors developed b...            Norwood, Massachusetts  ...  [[Arm Holdings, [Arm Holdings (Arm) is a Briti...        bridge           hard
+
+[7405 rows x 8 columns]
+```
+
+
 Note on the gold paragraphs column
 ----------------------------------
 
@@ -67,42 +137,6 @@ gold paragraph(s) may not be sufficient to answer the question at hand);
 
 Please refer to the `Full example` section below for a concrete case of gold paragraph
 extraction procedure.
-
-
-How to use
-----------
-
-```python
-import data_mine as dm
-
-from data_mine.nlp.hotpot_qa import HotpotQAType
-
-
-def main():
-    df = dm.HOTPOT_QA(HotpotQAType.DEV_DISTRACTOR)
-    print(df)  # Shows something similar to the example below.
-
-
-if __name__ == "__main__":
-    main()
-```
-
-The following HotpotQA types are available:
-1. `TRAIN`
-2. `DEV_DISTRACTOR`
-3. `DEV_FULLWIKI`
-7. `TEST_FULLWIKI`
-
-
-Scheme (HotpotQA DataFrame)
------------------------
-
-The loading function (`data_mine.nlp.hotpot_qa.HotpotQADataset` or `dm.HOTPOT_QA`)
-returns a `Pandas DataFrame` with TODO columns:
-* TODO
-
-
-Example: TODO
 
 
 Full example
