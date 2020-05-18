@@ -55,6 +55,8 @@ def HotpotQADataset(hotpot_qa_type):
             assert(len(supporting_facts) == 0)
             assert(question_type is None)
             assert(question_level is None)
+        # Note: most the the questions have 10 contexts.
+        assert(len(context) <= 10)
 
         # Get the list of supporting sentences by joining the supporting
         # facts with the context by title. There can be duplicate titles
