@@ -50,7 +50,7 @@ def CosmosQADataset(cosmos_qa_type):
             if label is not None:
                 label = chr(ord('A') + int(label))
 
-            # Validate date.
+            # Validate data.
             assert(isinstance(question_id, str))
             assert(isinstance(question, str))
             assert(isinstance(context, str))
@@ -69,5 +69,6 @@ def CosmosQADataset(cosmos_qa_type):
                 "answers": answers,
                 "correct": label,
             })
+    assert(len(all_data) == len(all_ids))
     df = pd.DataFrame(all_data)
     return df
