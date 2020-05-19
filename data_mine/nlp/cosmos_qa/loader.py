@@ -3,6 +3,7 @@ import pandas as pd
 
 from data_mine import Collection
 from data_mine.zookeeper import check_shallow_integrity, download_dataset
+from six import string_types
 from .types import CosmosQAType
 from .utils import type_to_data_file
 
@@ -26,7 +27,7 @@ def CosmosQADataset(cosmos_qa_type):
         for i in range(0, 4):
             key = "answer{}".format(i)
             answer = entry[key]
-            assert(isinstance(answer, str))
+            assert(isinstance(answer, string_types))
             yield answer
             del entry[key]
 
@@ -51,9 +52,9 @@ def CosmosQADataset(cosmos_qa_type):
                 label = chr(ord('A') + int(label))
 
             # Validate data.
-            assert(isinstance(question_id, str))
-            assert(isinstance(question, str))
-            assert(isinstance(context, str))
+            assert(isinstance(question_id, string_types))
+            assert(isinstance(question, string_types))
+            assert(isinstance(context, string_types))
             assert(isinstance(answers, list) and len(answers) == 4)
             if cosmos_qa_type == CosmosQAType.TEST:
                 assert(label is None)
