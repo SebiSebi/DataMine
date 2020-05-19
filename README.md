@@ -56,6 +56,8 @@ Available datasets
 | `RACE`                | NLP, QA, Multiple Choice   | [Additional information][RACE-Home]     | [RACE Example][RACE-Example-1]          |
 | `AllenAI OpenBookQA`  | NLP, QA, Multiple Choice   | [Additional information][OBQA-Home]     | [OBQA Example][OBQA-Example-1]          |
 | `HotpotQA`            | NLP, QA, Multi-hop QA      | [Additional information][HotpotQA-Home] | [HotpotQA Example][HotpotQA-Example-1]  |
+| `CosmosQA`            | NLP, QA, Multiple Choice   | [Additional information][CosmosQA-Home] | [CosmosQA Example][CosmosQA-Example-1]  |
+
 
 
 
@@ -65,3 +67,5 @@ Available datasets
 [OBQA-Example-1]: https://github.com/SebiSebi/DataMine/blob/master/examples/nlp/allen_ai_obqa/simple.py
 [HotpotQA-Home]: https://github.com/SebiSebi/DataMine/tree/master/data_mine/nlp/hotpot_qa
 [HotpotQA-Example-1]: https://github.com/SebiSebi/DataMine/blob/master/examples/nlp/hotpot_qa/simple.py
+[CosmosQA-Home]: https://github.com/SebiSebi/DataMine/tree/master/data_mine/nlp/cosmos_qa
+[CosmosQA-Example-1]: https://github.com/SebiSebi/DataMine/blob/master/examples/nlp/cosmos_qa/simple.py
