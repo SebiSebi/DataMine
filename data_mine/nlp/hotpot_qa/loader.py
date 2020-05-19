@@ -85,7 +85,8 @@ def HotpotQADataset(hotpot_qa_type):
             assert(len(gold_paragraphs) == 2)
         elif hotpot_qa_type == HotpotQAType.DEV_FULLWIKI:
             assert(len(gold_paragraphs) <= 2)
-        elif hotpot_qa_type == HotpotQAType.TEST_FULLWIKI:
+        else:
+            assert(hotpot_qa_type == HotpotQAType.TEST_FULLWIKI)
             assert(len(gold_paragraphs) == 0)
 
         assert(question_id not in all_ids)
