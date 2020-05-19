@@ -7,10 +7,8 @@ with open('README_PyPI.md', 'r', encoding='utf-8') as f:
     LONG_DESCRIPTION = f.read()
 assert(LONG_DESCRIPTION is not None)
 
-
-REQUIREMENTS = [
-        # 'TODO(sebisebi)': add
-]
+with open('requirements.txt') as f:
+    REQUIREMENTS = f.read().splitlines()
 
 setup(
     name='data_mine',
@@ -28,7 +26,7 @@ setup(
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     keywords='machine learning datasets data collection',
     classifiers=[
-        'Development Status :: 1 - Planning',  # TODO(sebisebi): change.
+        'Development Status :: 2 - Pre-Alpha',  # TODO(sebisebi): change.
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
