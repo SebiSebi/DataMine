@@ -1,5 +1,7 @@
 bumpversion>=0.5.3
+green>=3.1.0
 grip>=4.5.2
+plotly>=4.7.1
+spacy>=2.2.4
 twine>=3.1.1; python_version >= '3.3'
 twine>=1.15.0; python_version < '3.3'
-green>=3.1.0
