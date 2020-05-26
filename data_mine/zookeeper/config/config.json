@@ -94,5 +94,17 @@
             ],
 	    "expectedFiles": "nlp/cosmos_qa/expected_files.txt.gz"
         }
+    },
+    {
+        "dataset": "ALLEN_AI_ARC",
+        "config": {
+            "requirements": [
+                {
+                    "URL": "https://s3-us-west-2.amazonaws.com/ai2-website/data/ARC-V1-Feb2018.zip",
+                    "SHA256": "6d2d5ab50b2ceec6ba5f79c921be77cf2de712ea25a2b3f4fff3acc101cecfa0"
+                }
+            ],
+	    "expectedFiles": "nlp/allen_ai_arc/expected_files.txt.gz"
+        }
     }
 ]

@@ -10,6 +10,7 @@ class Collection(Enum):
     ALLEN_AI_OBQA = 4  # https://github.com/allenai/OpenBookQA
     HOTPOT_QA = 5  # https://hotpotqa.github.io/
     COSMOS_QA = 6  # https://wilburone.github.io/cosmos/
+    ALLEN_AI_ARC = 7  # https://allenai.org/data/arc
 
     @staticmethod
     def from_str(label):

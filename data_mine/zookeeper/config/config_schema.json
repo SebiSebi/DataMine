@@ -8,6 +8,7 @@
             "dataset": {
                 "type": "string",
                 "enum": [
+		    "ALLEN_AI_ARC",
 		    "ALLEN_AI_DROP",
 		    "ALLEN_AI_OBQA",
 		    "COSMOS_QA",
