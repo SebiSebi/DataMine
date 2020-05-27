@@ -57,6 +57,8 @@ Available datasets
 | `AllenAI OpenBookQA`  | NLP, QA, Multiple Choice   | [Additional information][OBQA-Home]     | [OBQA Example][OBQA-Example-1]          |
 | `HotpotQA`            | NLP, QA, Multi-hop QA      | [Additional information][HotpotQA-Home] | [HotpotQA Example][HotpotQA-Example-1]  |
 | `CosmosQA`            | NLP, QA, Multiple Choice   | [Additional information][CosmosQA-Home] | [CosmosQA Example][CosmosQA-Example-1]  |
+| `AllenAI ARC`         | NLP, QA, Multiple Choice   | [Additional information][ARC-Home]      | [ARC Example][ARC-Example-1]            |
+
 
 
 
@@ -69,3 +71,5 @@ Available datasets
 [HotpotQA-Example-1]: https://github.com/SebiSebi/DataMine/blob/master/examples/nlp/hotpot_qa/simple.py
 [CosmosQA-Home]: https://github.com/SebiSebi/DataMine/tree/master/data_mine/nlp/cosmos_qa
 [CosmosQA-Example-1]: https://github.com/SebiSebi/DataMine/blob/master/examples/nlp/cosmos_qa/simple.py
+[ARC-Home]: https://github.com/SebiSebi/DataMine/tree/master/data_mine/nlp/allen_ai_arc
+[ARC-Example-1]: https://github.com/SebiSebi/DataMine/blob/master/examples/nlp/allen_ai_arc/simple.py
