@@ -15,6 +15,7 @@ from collections import Counter
 from data_mine.nlp.CSQA import CSQAType
 from data_mine.nlp.RACE import RACEType
 from data_mine.nlp.cosmos_qa import CosmosQAType
+from data_mine.nlp.allen_ai_arc import ARCType
 from data_mine.nlp.allen_ai_drop import DROPType
 from data_mine.nlp.allen_ai_obqa import OBQAType
 
@@ -63,11 +64,45 @@ def load_race():
         dm.RACE(RACEType.TEST_MIDDLE),
         dm.RACE(RACEType.TEST_HIGH)
     ], ignore_index=True, sort=False)
+    questions = df["question"].tolist()
+    questions = map(lambda q: q.replace("_", " "), questions)
+    return list(questions)
+
+
+def load_arc():
+    df = pd.concat([
+        dm.ALLEN_AI_ARC(ARCType.TRAIN_EASY),
+        dm.ALLEN_AI_ARC(ARCType.DEV_EASY),
+        dm.ALLEN_AI_ARC(ARCType.TEST_EASY),
+        dm.ALLEN_AI_ARC(ARCType.TRAIN_CHALLENGE),
+        dm.ALLEN_AI_ARC(ARCType.DEV_CHALLENGE),
+        dm.ALLEN_AI_ARC(ARCType.TEST_CHALLENGE),
+    ], ignore_index=True, sort=False)
     return df["question"].tolist()
 
 
 def load_questions():
-    return load_obqa()
+    return load_race()
+
+
+def extract_trigram_from_doc(doc):
+    """
+    The function receives a (parsed) spaCy document and is expected to return
+    a tuple of tokens representing the first three tokens from the question.
+
+    The function returns None if a trigram cannot be extracted (e.g. the
+    question is too short. Some questions have multiple sentences from which
+    only the last one is the actual sentence. We use that to extract trigrams.
+    """
+    if len(doc) < 3:
+        return None
+    sents = list(doc.sents)
+    if len(sents) > 1:
+        last_sent = sents[-1]
+        if len(last_sent) < 3:
+            return None
+        doc = last_sent
+    return tuple([token.lower_ for token in doc[:3]])
 
 
 def tokenize(questions):
@@ -81,15 +116,21 @@ def tokenize(questions):
             n_process=num_cpus - 1,
             disable=["ner", "tagger"]
     )
+    compound_questions = 0
     skipped = 0
     tokens = []
     for doc in tqdm.tqdm(docs, total=len(questions), desc="Tokenizing"):
-        if len(doc) < 3:
+        trigram = extract_trigram_from_doc(doc)
+        if trigram is None:
             skipped += 1
             continue
-        tokens.append(tuple([token.lower_ for token in doc[:3]]))
+        tokens.append(trigram)
+        if len(list(doc.sents)) > 1:
+            compound_questions += 1
     if skipped > 0:
         print("Skipped {} questions as they are too short.".format(skipped))
+    if compound_questions > 0:
+        print("Found {} questions with multiple sentences.".format(compound_questions))  # noqa: E501
     tokens = list(Counter(tokens).items())
     tokens.sort(key=lambda x: x[1], reverse=True)
     return tokens
