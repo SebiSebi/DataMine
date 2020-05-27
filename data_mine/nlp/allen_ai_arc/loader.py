@@ -13,7 +13,7 @@ def ARCDataset(arc_type):
     Loads an ARC dataset given the partition (see the ARCType enum).
     Any error during reading will generate an exception.
 
-    Returns a Pandas DataFrame with 5 columns:
+    Returns a Pandas DataFrame with 4 columns:
     * 'id': string
     * 'question': string
     * 'answers': list[string], 3 <= length <= 5
