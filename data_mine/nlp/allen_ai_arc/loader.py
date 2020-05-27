@@ -5,7 +5,7 @@ from data_mine import Collection
 from data_mine.zookeeper import check_shallow_integrity, download_dataset
 from six import string_types
 from .types import ARCType
-from .utils import type_to_data_file
+from .utils import type_to_data_file, valid_choices
 
 
 def ARCDataset(arc_type):
@@ -49,6 +49,8 @@ def ARCDataset(arc_type):
             assert(isinstance(question_id, string_types))
             assert(isinstance(correct_answer, string_types))
             assert(correct_answer in ["A", "B", "C", "D", "E", "1", "2", "3", "4"])  # noqa: E501
+            assert(correct_answer in [x["label"] for x in entry["choices"]])
+            assert(valid_choices([x["label"] for x in entry["choices"]]))
             assert(isinstance(question, string_types))
             assert(len(answers) in [3, 4, 5])
             for answer in answers:
