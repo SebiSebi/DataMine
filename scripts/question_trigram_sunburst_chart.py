@@ -82,7 +82,7 @@ def load_arc():
 
 
 def load_questions():
-    return load_race()
+    return load_arc()
 
 
 def extract_trigram_from_doc(doc):
@@ -163,9 +163,11 @@ def main():
             ] + list(more_itertools.interleave_longest(
                     list(px.colors.diverging.Spectral),
                     list(px.colors.diverging.Geyser))
-            )
+            ),
     )
-    fig.update_traces(textfont_size=15)
+    fig.update_traces(insidetextorientation="radial")
+    fig.update_traces(textfont_size=36)
+    fig.update_layout(title_text="ARC", title_x=0.5)
     fig.show()
 
 
