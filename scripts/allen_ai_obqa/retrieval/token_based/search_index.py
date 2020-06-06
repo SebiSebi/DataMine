@@ -30,6 +30,16 @@ def search(query_string, analyzer, searcher):
         print("{}) {} (score: {})".format(i + 1, fact, score))
 
 
+def by_random_question(analyzer, searcher):
+    df = pd.concat(map(dm.ALLEN_AI_OBQA, list(OBQAType))).sample(n=1)
+    row = next(df.iterrows())[1]
+    print("Question: " + row.question + "\n")
+    for idx, answer in zip(["A", "B", "C", "D"], row.answers):
+        print("{}) {}".format(idx, answer))
+    print("")
+    search(row.question, analyzer, searcher)
+
+
 def annotate_all_questions(analyzer, searcher):
     df = pd.concat(map(dm.ALLEN_AI_OBQA, list(OBQAType)))
     annotations = {}
@@ -39,7 +49,7 @@ def annotate_all_questions(analyzer, searcher):
             query_string = QueryParser.escape(sent)
             query = QueryParser("contents", analyzer).parse(query_string)
             hits = searcher.search(query, 75).scoreDocs
-            closest = [searcher.doc(score_doc.doc).get("contents") for score_doc in hits]
+            closest = [searcher.doc(score_doc.doc).get("contents") for score_doc in hits]  # noqa: E501:
             annotations[sent] = closest
     pickle.dump(annotations, open("annotations.pkl", "wb"))
     print("Annotations written to annotations.pkl")
@@ -54,8 +64,9 @@ def main():
     analyzer = EnglishAnalyzer()
 
     # query_string = "House is a simple fact about science reaction"
-    query_string = get_random_question()
+    # query_string = get_random_question()
     # search(query_string, analyzer, searcher)
+    # by_random_question(analyzer, searcher)
     annotate_all_questions(analyzer, searcher)
     del searcher
 
