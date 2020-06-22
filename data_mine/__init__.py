@@ -42,3 +42,8 @@ def ALLEN_AI_ARC(*args, **kwargs):
     from data_mine.nlp.allen_ai_arc import ARCDataset
     return ARCDataset(*args, **kwargs)
 
+
+def TRIVIA_QA(*args, **kwargs):
+    from data_mine.nlp.trivia_qa import TriviaQADataset
+    return TriviaQADataset(*args, **kwargs)
+

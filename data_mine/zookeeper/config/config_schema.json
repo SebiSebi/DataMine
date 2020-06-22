@@ -14,7 +14,8 @@
 		    "COSMOS_QA",
 		    "CSQA",
 		    "HOTPOT_QA",
-		    "RACE"
+		    "RACE",
+		    "TRIVIA_QA"
                 ]
             },
             "config": {

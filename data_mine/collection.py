@@ -11,6 +11,7 @@ class Collection(Enum):
     HOTPOT_QA = 5  # https://hotpotqa.github.io/
     COSMOS_QA = 6  # https://wilburone.github.io/cosmos/
     ALLEN_AI_ARC = 7  # https://allenai.org/data/arc
+    TRIVIA_QA = 8  # https://nlp.cs.washington.edu/triviaqa/index.html
 
     @staticmethod
     def from_str(label):
